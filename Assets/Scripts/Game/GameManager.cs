@@ -1,4 +1,3 @@
-using System;
 using Enums;
 using ThirdParty;
 using UnityEngine;
@@ -8,19 +7,44 @@ namespace Game
     public class GameManager : MonoBehaviour
     {
         [SerializeField] private LevelManager _levelManager;
-
-        private GameState _currentGameState;
+        public GameState CurrentGameState { get; private set; }
 
         private void Awake()
         {
             ApplyConfigs();
-
-            _levelManager.Initalize();
         }
+
+        private void Start()
+        {
+            _levelManager.Initialize();
+
+            AddListeners();
+
+            ChangeGameState(GameState.Loading);
+        }
+
+        private void AddListeners()
+        {
+            Signals.Get<FakeLoadingFinished>().AddListener(OnFakeLoadingFinished);
+            Signals.Get<PlayButtonClicked>().AddListener(OnPlayButtonClicked);
+        }
+
+        private void OnFakeLoadingFinished()
+        {
+            ChangeGameState(GameState.Menu);
+        }
+
+        private void OnPlayButtonClicked()
+        {
+            _levelManager.CreateLevel();
+            ChangeGameState(GameState.Gameplay);
+        }
+
         private void ChangeGameState(GameState newGameState)
         {
-            Signals.Get<GameStateChanged>().Dispatch(_currentGameState, newGameState);
-            _currentGameState = newGameState;
+            var oldGameState = CurrentGameState;
+            CurrentGameState = newGameState;
+            Signals.Get<GameStateChanged>().Dispatch(oldGameState, newGameState);
         }
 
         private void ApplyConfigs()

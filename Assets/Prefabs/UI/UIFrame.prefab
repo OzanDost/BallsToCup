@@ -406,7 +406,7 @@ Camera:
   field of view: 60
   orthographic: 1
   orthographic size: 8.5
-  m_Depth: 1
+  m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 32
@@ -580,7 +580,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!225 &6184171583098710263
 CanvasGroup:
   m_ObjectHideFlags: 0

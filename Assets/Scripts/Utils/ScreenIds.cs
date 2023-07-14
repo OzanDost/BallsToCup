@@ -1,6 +1,6 @@
-namespace UI
+namespace Utils
 {
-    public sealed class ScreenIds
+    internal static class ScreenIds
     {
         public const string LoadingWindow = "FakeLoadingWindow";
         public const string MenuWindow = "MainMenuWindow";

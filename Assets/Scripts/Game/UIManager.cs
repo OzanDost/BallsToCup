@@ -2,21 +2,22 @@ using System;
 using Enums;
 using ThirdParty;
 using ThirdParty.uiframework;
-using UI;
 using UI.Popups;
 using UnityEngine;
+using Utils;
 
 namespace Game
 {
     public class UIManager : MonoBehaviour
     {
-        [SerializeField] private UISettings defaultUISettings;
+        [SerializeField] private UISettings _defaultUISettings;
 
         private UIFrame _uiFrame;
 
         private void Awake()
         {
-            _uiFrame = defaultUISettings.CreateUIInstance();
+            _uiFrame = _defaultUISettings.CreateUIInstance();
+            AddListeners();
         }
 
         private void AddListeners()
@@ -42,12 +43,17 @@ namespace Game
         {
             if (newState == GameState.Loading)
             {
-                _uiFrame.OpenWindow(ScreenIds.FakeRewardedPopup);
+                _uiFrame.OpenWindow(ScreenIds.LoadingWindow);
             }
 
             if (newState == GameState.Menu)
             {
                 _uiFrame.OpenWindow(ScreenIds.MenuWindow);
+            }
+
+            if (newState == GameState.Gameplay)
+            {
+                _uiFrame.OpenWindow(ScreenIds.GameplayWindow);
             }
         }
     }

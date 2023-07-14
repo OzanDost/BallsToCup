@@ -10,6 +10,7 @@ using Unity.EditorCoroutines.Editor;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using Utils;
 using Random = UnityEngine.Random;
 
 namespace Editor
@@ -22,16 +23,14 @@ namespace Editor
 
         [ShowIf("@_mode == LevelEditorMode.Edit")]
         [LabelText("Level")]
-        [AssetSelector(Paths = LevelResourcesPath)]
+        [AssetSelector(Paths = PathHelper.LevelResourcesPath)]
         [OnValueChanged("OnLoadedLevelChanged")]
         [SerializeField] private LevelData _loadedLevelData;
 
         [HideLabel]
         [Title("Level Data")]
         [SerializeField] private LevelDataEditorWrapper _levelDataEditorWrapper = new();
-
-        private const string LevelResourcesPath = "Assets/Resources/Levels/";
-        private const string BallPath = "Assets/Prefabs/Game/Ball.prefab";
+        
 
         private Ball _ballPrefab;
 
@@ -90,7 +89,7 @@ namespace Editor
             levelToCreate.SetFields(_levelDataEditorWrapper.LevelId, _levelDataEditorWrapper.BallCount,
                 _levelDataEditorWrapper.BallTargetCount, tube);
 
-            AssetDatabase.CreateAsset(levelToCreate, $"{LevelResourcesPath}{levelToCreate.name}.asset");
+            AssetDatabase.CreateAsset(levelToCreate, $"{PathHelper.LevelResourcesPath}{levelToCreate.name}.asset");
             AssetDatabase.SaveAssets();
             EditorGUIUtility.PingObject(levelToCreate);
         }
@@ -106,7 +105,7 @@ namespace Editor
 
             if (_ballPrefab == null)
             {
-                _ballPrefab = AssetDatabase.LoadAssetAtPath<Ball>(BallPath);
+                _ballPrefab = AssetDatabase.LoadAssetAtPath<Ball>(PathHelper.BallPath);
             }
 
             Physics.simulationMode = SimulationMode.Script;
@@ -140,7 +139,7 @@ namespace Editor
         {
             var addedBalls = new List<Ball>();
             var target = tube.BallParent;
-            var localPos = tube.Bowl.Center.localPosition;
+            var localPos = tube.Bowl.Center.position;
             var randomOffset = Random.insideUnitSphere * 0.45f;
 
             for (int i = 0; i < count; i++)
@@ -174,7 +173,7 @@ namespace Editor
         protected override void OnDisable()
         {
             base.OnDisable();
-            _ballPrefab = AssetDatabase.LoadAssetAtPath<Ball>(BallPath);
+            _ballPrefab = AssetDatabase.LoadAssetAtPath<Ball>(PathHelper.BallPath);
             Physics.simulationMode = SimulationMode.FixedUpdate;
         }
     }

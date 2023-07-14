@@ -3,35 +3,29 @@ using DefaultNamespace;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using Sirenix.Utilities;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using Utils;
 
 namespace Editor
 {
     public class TubeGenerator : OdinEditorWindow
     {
-        [AssetSelector(Paths = SVGPath, ExpandAllMenuItems = false, DrawDropdownForListElements = false,
+        [AssetSelector(Paths = PathHelper.SvgPath, ExpandAllMenuItems = false, DrawDropdownForListElements = false,
             DisableListAddButtonBehaviour = true)]
         [OnValueChanged("OnSVGChanged")]
-        [SerializeField] private Object svg;
+        [SerializeField] private Object _svg;
 
         [Multiline(5)]
-        [SerializeField] private string svgContent;
+        [SerializeField] private string _svgContent;
 
-        [SerializeField] private string Name;
+        [SerializeField] private string _name;
 
         private PipeGenerator _pipeGenerator;
         private GameObject _baseTube;
         private GameObject _tubeToCreate;
         private Transform _pipeGeneratorParent;
 
-        private const string PipeGeneratorPath = "Assets/Prefabs/Editor/PipeGenerator.prefab";
-        private const string BowlPath = "Assets/Prefabs/Editor/Bowl.prefab";
-        private const string TubeBasePath = "Assets/Prefabs/Game/Tubes/Tube_Base.prefab";
-        private const string TubeSavePath = "Assets/Prefabs/Game/Tubes/";
-        private const string MeshSavePath = "Assets/Models/TubeMeshes/";
-        private const string SVGPath = "Assets/SVGs/";
 
         [MenuItem("Tools/Tube Mesh Generator")]
         public static void ShowWindow()
@@ -41,15 +35,15 @@ namespace Editor
 
         public void OnSVGChanged()
         {
-            var svgPath = AssetDatabase.GetAssetPath(svg).Replace("Assets/", "");
+            var svgPath = AssetDatabase.GetAssetPath(_svg).Replace("Assets/", "");
             var fullPath = Path.Combine(Application.dataPath, svgPath);
-            svgContent = File.ReadAllText(fullPath);
+            _svgContent = File.ReadAllText(fullPath);
         }
 
         [Button]
         private void GenerateMesh()
         {
-            if (svgContent.IsNullOrWhitespace())
+            if (_svgContent.IsNullOrWhitespace())
             {
                 EditorUtility.DisplayDialog("Error", "SVG content is empty", "Ok");
                 return;
@@ -60,10 +54,10 @@ namespace Editor
                 LoadGenerator();
             }
 
-            var mesh = _pipeGenerator.Generate(svgContent);
+            var mesh = _pipeGenerator.Generate(_svgContent);
             MeshUtility.Optimize(mesh);
 
-            AssetDatabase.CreateAsset(mesh, $"{MeshSavePath}{Name}.asset");
+            AssetDatabase.CreateAsset(mesh, $"{PathHelper.MeshSavePath}{_name}.asset");
 
             CreatePrefab(mesh);
         }
@@ -86,9 +80,9 @@ namespace Editor
 
         private void LoadGenerator()
         {
-            _baseTube = AssetDatabase.LoadAssetAtPath<GameObject>(TubeBasePath);
+            _baseTube = AssetDatabase.LoadAssetAtPath<GameObject>(PathHelper.TubeBasePath);
 
-            var pipeGeneratorPrefab = AssetDatabase.LoadAssetAtPath<PipeGenerator>(PipeGeneratorPath);
+            var pipeGeneratorPrefab = AssetDatabase.LoadAssetAtPath<PipeGenerator>(PathHelper.PipeGeneratorPath);
             _pipeGenerator = Instantiate(pipeGeneratorPrefab, Vector3.zero, Quaternion.identity);
         }
 
@@ -100,20 +94,25 @@ namespace Editor
 
             tube.GetComponent<MeshFilter>().sharedMesh = tubeMesh;
             tube.GetComponent<MeshRenderer>().sharedMaterial = _pipeGenerator.Material;
-            tube.AddComponent<MeshCollider>();
+            var tubeCollider = tube.AddComponent<MeshCollider>();
 
             tube.transform.SetParent(bowl.transform, false);
 
-            var tubeEdge = tube.transform.InverseTransformPoint(_pipeGenerator.SplineComputer.EvaluatePosition(0d));
-            var targetTubePos = bowl.Entry.position - tubeEdge;
+            var tubeEdge = _pipeGenerator.SplineComputer.EvaluatePosition(0d);
+            var targetTubePos = bowl.Entry.localPosition - tubeEdge;
             tube.transform.localPosition = targetTubePos;
 
-            if (Name.Contains("Tube_"))
+            var totalVerticalBounds = tubeCollider.bounds.size.y + bowl.MeshCollider.bounds.size.y;
+            var verticalOffset = totalVerticalBounds / 6f * Vector3.up;
+            bowl.transform.localPosition -= verticalOffset;
+
+            if (_name.Contains("Tube_"))
             {
-                Name = Name.Replace("Tube_", "");
+                _name = _name.Replace("Tube_", "");
             }
 
-            var savedTube = PrefabUtility.SaveAsPrefabAsset(_tubeToCreate, $"{TubeSavePath}Tube_{Name}.prefab");
+            var savedTube =
+                PrefabUtility.SaveAsPrefabAsset(_tubeToCreate, $"{PathHelper.TubeSavePath}Tube_{_name}.prefab");
 
 
             EditorGUIUtility.PingObject(savedTube);

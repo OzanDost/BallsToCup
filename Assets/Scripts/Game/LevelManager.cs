@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Data;
+using ThirdParty;
 using UnityEngine;
 
 namespace Game
@@ -13,7 +14,7 @@ namespace Game
         private int _levelIndex;
         private bool _finishedAllLevels;
 
-        public void Initalize()
+        public void Initialize()
         {
             _levelIndex = SaveManager.GetLevelIndex();
 
@@ -27,8 +28,8 @@ namespace Game
         {
             var levelIndex = GetLevelIndex();
             var data = _levelList[levelIndex];
-            
-            
+
+            Signals.Get<RequestGameplayInitialize>().Dispatch(data);
         }
 
 

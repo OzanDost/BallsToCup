@@ -1,9 +1,8 @@
-using ThirdParty;
 using ThirdParty.uiframework.Window;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI.Popups
+namespace UI
 {
     public class FailPopup : AWindowController
     {

@@ -123,6 +123,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &102943866
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 102943867}
+  m_Layer: 0
+  m_Name: TubeTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &102943867
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 102943866}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 6.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 389559956}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &225902942
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,7 +177,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 225902942}
-  m_LocalRotation: {x: -6.123234e-17, y: 1, z: 6.123234e-17, w: -3.7493994e-33}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1.58, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -185,6 +216,7 @@ Transform:
   m_Children:
   - {fileID: 563328643}
   - {fileID: 225902943}
+  - {fileID: 102943867}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -232,6 +264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1def563a077242c99cc28427f986db98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _targetPos: {fileID: 102943867}
 --- !u!1 &537751229
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,6 +274,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 537751230}
+  - component: {fileID: 537751231}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -263,6 +297,19 @@ Transform:
   m_Father: {fileID: 1330582327}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &537751231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 537751229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 481ba7751ab24511b7c97875f8698507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _levelManager: {fileID: 1335391577}
 --- !u!1 &563328642
 GameObject:
   m_ObjectHideFlags: 0
@@ -843,4 +890,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9930e33ab1414280a8a609437059c48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultUISettings: {fileID: 11400000, guid: 1ea68102c7a414d20b3b0e0eac7c4f55, type: 2}
+  _defaultUISettings: {fileID: 11400000, guid: 1ea68102c7a414d20b3b0e0eac7c4f55, type: 2}
