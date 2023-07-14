@@ -7,7 +7,6 @@ namespace Game
     public class LevelManager : MonoBehaviour
     {
         private const string LevelSaveDataPath = "LevelDatas";
-
         private List<LevelData> _levelList;
         private LevelData _lastActiveLevel;
         private int _levelIndex;

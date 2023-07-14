@@ -8,6 +8,9 @@ using UnityEngine;
 
 public class PipeGenerator : MonoBehaviour
 {
+    public SplineComputer SplineComputer => _splineComputer;
+    public Material Material => _material;
+
     [SerializeField] private Material _material;
     [SerializeField] private SplineComputer _splineComputer;
     [SerializeField] private SplineMesh _splineMesh;
@@ -28,9 +31,15 @@ public class PipeGenerator : MonoBehaviour
         int index = 0;
         foreach (var segment in segments)
         {
-            _splineComputer.SetPoint(index, new SplinePoint(segment.P0 * _scaleFactor));
             if (index != segments.Length - 1)
-                _splineComputer.SetPoint(index, new SplinePoint(segment.P1 * _scaleFactor));
+            {
+                _splineComputer.SetPoint(index, new SplinePoint(segment.P0 * _scaleFactor, segment.P1 * _scaleFactor));
+            }
+            else
+            {
+                _splineComputer.SetPoint(index, new SplinePoint(segment.P0 * _scaleFactor));
+            }
+
             index++;
         }
 

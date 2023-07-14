@@ -95,7 +95,7 @@ Material:
     - _DirectionPitch: 0
     - _DirectionYaw: 0
     - _DstBlend: 10
-    - _EdgeThickness: 6.75
+    - _EdgeThickness: 5.08
     - _EnableHeightBlend: 0
     - _Exponent: 1
     - _FlatRimEdgeSmoothness: 0.5
@@ -158,7 +158,7 @@ Material:
     - _ColorDimSteps: {r: 0.6745283, g: 1, b: 0.9762687, a: 1}
     - _ColorGradient: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
     - _Direction: {r: 0, g: 1, b: 0, a: 0}
-    - _EdgeColor: {r: 0, g: 0, b: 0, a: 0}
+    - _EdgeColor: {r: 0.6007476, g: 0.7857033, b: 0.9433962, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FlatRimColor: {r: 1, g: 1, b: 1, a: 1}
     - _FlatSpecularColor: {r: 1, g: 1, b: 1, a: 1}

@@ -1,19 +1,27 @@
-using System;
+using DefaultNamespace;
+using UnityEngine;
 
 namespace Data
 {
-    [Serializable]
-    public class LevelData
+    public class LevelData : ScriptableObject
     {
-        public int Id { get; private set; }
-        public int BallCount { get; private set; }
-        public int BallTargetCount { get; private set; }
-        
-        public LevelData(int id, int ballCount, int ballTargetCount)
+        public int LevelId => _levelId;
+        public int BallCount => _ballCount;
+        public int BallTargetCount => _ballTargetCount;
+
+        public Tube Tube => _tube;
+
+        [SerializeField] private int _levelId;
+        [SerializeField] private int _ballCount;
+        [SerializeField] private int _ballTargetCount;
+        [SerializeField] private Tube _tube;
+
+        public void SetFields(int levelId, int ballCount, int ballTargetCount, Tube tube)
         {
-            Id = id;
-            BallCount = ballCount;
-            BallTargetCount = ballTargetCount;
+            _levelId = levelId;
+            _ballCount = ballCount;
+            _ballTargetCount = ballTargetCount;
+            _tube = tube;
         }
     }
 }
