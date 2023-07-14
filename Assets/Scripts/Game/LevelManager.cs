@@ -6,8 +6,9 @@ namespace Game
 {
     public class LevelManager : MonoBehaviour
     {
+        [SerializeField] private List<LevelData> _levelList;
+
         private const string LevelSaveDataPath = "LevelDatas";
-        private List<LevelData> _levelList;
         private LevelData _lastActiveLevel;
         private int _levelIndex;
         private bool _finishedAllLevels;
@@ -21,11 +22,13 @@ namespace Game
                 _finishedAllLevels = true;
             }
         }
-        
+
         public void CreateLevel()
         {
             var levelIndex = GetLevelIndex();
             var data = _levelList[levelIndex];
+            
+            
         }
 
 

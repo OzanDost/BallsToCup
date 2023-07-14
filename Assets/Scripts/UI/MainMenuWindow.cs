@@ -8,13 +8,13 @@ namespace UI.Windows
     public class MainMenuWindow : AWindowController
     {
         [SerializeField] private Button playButton;
-        [SerializeField] private Button continueButton;
+        // [SerializeField] private Button continueButton;
 
         protected override void Awake()
         {
             base.Awake();
             playButton.onClick.AddListener(OnPlayButtonClicked);
-            continueButton.onClick.AddListener(OnContinueButtonClicked);
+            // continueButton.onClick.AddListener(OnContinueButtonClicked);
         }
 
         private void OnContinueButtonClicked()
@@ -24,7 +24,7 @@ namespace UI.Windows
         protected override void On_UIOPen()
         {
             base.On_UIOPen();
-            continueButton.gameObject.SetActive(false);
+            // continueButton.gameObject.SetActive(false);
         }
 
 

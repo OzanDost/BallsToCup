@@ -7,14 +7,13 @@ namespace UI.Windows
 {
     public class GameplayWindow : AWindowController
     {
-        [SerializeField] private RectTransform boardGridContainer;
         [SerializeField] private Button pauseButton;
         [SerializeField] private Button quitButton;
 
         protected override void Awake()
         {
             base.Awake();
-            pauseButton.onClick.AddListener(OnPauseButtonClicked);
+            // pauseButton.onClick.AddListener(OnPauseButtonClicked);
             quitButton.onClick.AddListener(OnQuitButtonClicked);
         }
 

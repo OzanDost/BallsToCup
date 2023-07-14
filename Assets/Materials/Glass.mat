@@ -95,7 +95,7 @@ Material:
     - _DirectionPitch: 0
     - _DirectionYaw: 0
     - _DstBlend: 10
-    - _EdgeThickness: 5.08
+    - _EdgeThickness: -0.11
     - _EnableHeightBlend: 0
     - _Exponent: 1
     - _FlatRimEdgeSmoothness: 0.5
