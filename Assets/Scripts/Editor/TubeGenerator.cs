@@ -119,7 +119,7 @@ namespace Editor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            DestroyImmediate(_tubeToCreate.gameObject);
+            // DestroyImmediate(_tubeToCreate.gameObject);
         }
 
         private void ClearScene()

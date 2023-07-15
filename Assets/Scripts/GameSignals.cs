@@ -12,3 +12,4 @@ public class LevelRetryRequested : ASignal{}
 public class PlayButtonClicked : ASignal{}
 public class RequestGameplayInitialize : ASignal<LevelData>{}
 public class GameplayInitialized : ASignal<LevelData>{}
+public class BallEnteredCup: ASignal{}

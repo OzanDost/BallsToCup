@@ -39,6 +39,8 @@ namespace Game
             {
                 //todo 
             }
+
+            Signals.Get<BallEnteredCup>().Dispatch();
         }
 
 

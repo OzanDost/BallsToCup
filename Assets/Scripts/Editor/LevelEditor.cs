@@ -7,7 +7,6 @@ using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using Sirenix.Utilities;
 using Unity.EditorCoroutines.Editor;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using Utils;
@@ -129,7 +128,7 @@ namespace Editor
                     PrefabUtility.RecordPrefabInstancePropertyModifications(tubeGameObject);
                     PrefabUtility.ApplyPrefabInstance(tubeGameObject, InteractionMode.UserAction);
                     EditorGUIUtility.PingObject(_levelDataEditorWrapper.Tube);
-                    DestroyImmediate(tubeGameObject);
+                    // DestroyImmediate(tubeGameObject);
                     Physics.simulationMode = SimulationMode.FixedUpdate;
                 }), this);
         }
@@ -144,8 +143,8 @@ namespace Editor
 
             for (int i = 0; i < count; i++)
             {
-                var addedBall = Instantiate(ball, localPos, Quaternion.identity, target);
-                addedBall.transform.localPosition += randomOffset;
+                var addedBall = Instantiate(ball, localPos + randomOffset, Quaternion.identity, target);
+                // addedBall.transform.position += randomOffset;
                 addedBalls.Add(addedBall);
                 Physics.Simulate(Time.fixedDeltaTime);
                 yield return new EditorWaitForSeconds(0.2f);
