@@ -14,8 +14,7 @@ public class PipeGenerator : MonoBehaviour
     [SerializeField] private Material _material;
     [SerializeField] private SplineComputer _splineComputer;
     [SerializeField] private SplineMesh _splineMesh;
-    [SerializeField] private float _scaleFactor = 0.1f;
-    [SerializeField] private MeshRenderer _meshRenderer;
+    [SerializeField] private float _scaleFactor = 0.05f;
     [SerializeField] private MeshFilter _filter;
 
     [Button]

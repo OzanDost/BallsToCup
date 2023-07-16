@@ -28,16 +28,6 @@ namespace UI.Popups
             failedToFinishText.SetActive(false);
         }
 
-        protected override void On_UIOPen()
-        {
-            base.On_UIOPen();
-        }
-
-        protected override void On_UIClose()
-        {
-            base.On_UIClose();
-        }
-
         private void OnCloseRewarded()
         {
             failedToFinishText.SetActive(true);

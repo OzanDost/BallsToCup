@@ -8,5 +8,8 @@ namespace Utils
         public const string MeshSavePath = "Assets/Models/TubeMeshes/";
         public const string SvgPath = "Assets/SVGs/";
         public const string LevelResourcesPath = "Assets/Resources/Levels/";
-        public const string BallPath = "Assets/Prefabs/Game/Ball.prefab";    }
+        public const string BallPath = "Assets/Prefabs/Game/Ball.prefab";
+        public const string BallReleaserPath = "Assets/Prefabs/Game/BallReleaser.prefab";
+        public const string GameConfigPath = "";
+    }
 }

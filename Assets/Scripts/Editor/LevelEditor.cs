@@ -28,8 +28,15 @@ namespace Editor
 
         [HideLabel]
         [Title("Level Data")]
+        [HorizontalGroup("row")]
         [SerializeField] private LevelDataEditorWrapper _levelDataEditorWrapper = new();
-        
+
+
+        // [HorizontalGroup("row")]
+        // [PreviewField]
+        // [ListDrawerSettings(DefaultExpandedState = true, ShowFoldout = true, HideAddButton = true,
+        //     HideRemoveButton = true)]
+        // [SerializeField] private List<Material> _ballMaterial;
 
         private Ball _ballPrefab;
 
@@ -37,6 +44,16 @@ namespace Editor
         public static void ShowWindow()
         {
             GetWindow<LevelEditor>();
+
+            EditorApplication.playModeStateChanged += EditorApplicationOnplayModeStateChanged;
+        }
+
+        private static void EditorApplicationOnplayModeStateChanged(PlayModeStateChange playMode)
+        {
+            if (playMode == PlayModeStateChange.EnteredPlayMode)
+            {
+                GetWindow<LevelEditor>().Close();
+            }
         }
 
         private void OnModeChanged()
@@ -128,7 +145,7 @@ namespace Editor
                     PrefabUtility.RecordPrefabInstancePropertyModifications(tubeGameObject);
                     PrefabUtility.ApplyPrefabInstance(tubeGameObject, InteractionMode.UserAction);
                     EditorGUIUtility.PingObject(_levelDataEditorWrapper.Tube);
-                    // DestroyImmediate(tubeGameObject);
+                    DestroyImmediate(tubeGameObject);
                     Physics.simulationMode = SimulationMode.FixedUpdate;
                 }), this);
         }
@@ -143,9 +160,16 @@ namespace Editor
 
             for (int i = 0; i < count; i++)
             {
-                var addedBall = Instantiate(ball, localPos + randomOffset, Quaternion.identity, target);
-                // addedBall.transform.position += randomOffset;
+                var addedBall = PrefabUtility.InstantiatePrefab(ball) as Ball;
+                addedBall.transform.position = localPos + randomOffset;
+                addedBall.transform.SetParent(target, true);
                 addedBalls.Add(addedBall);
+                Physics.Simulate(Time.fixedDeltaTime);
+                yield return new EditorWaitForSeconds(0.1f);
+            }
+
+            for (int i = 0; i < count * 2; i++)
+            {
                 Physics.Simulate(Time.fixedDeltaTime);
                 yield return new EditorWaitForSeconds(0.2f);
             }
@@ -172,7 +196,6 @@ namespace Editor
         protected override void OnDisable()
         {
             base.OnDisable();
-            _ballPrefab = AssetDatabase.LoadAssetAtPath<Ball>(PathHelper.BallPath);
             Physics.simulationMode = SimulationMode.FixedUpdate;
         }
     }
@@ -186,20 +209,20 @@ namespace Editor
     [Serializable]
     public class LevelDataEditorWrapper
     {
-        [HorizontalGroup("Row")]
-        [VerticalGroup("Row/Left")]
+        // [HorizontalGroup("Row")]
+        [VerticalGroup("Left")]
         public string LevelName;
 
-        [VerticalGroup("Row/Left")]
+        [VerticalGroup("Left")]
         public int LevelId;
 
-        [VerticalGroup("Row/Left")]
+        [VerticalGroup("Left")]
         public int BallCount;
 
-        [VerticalGroup("Row/Left")]
+        [VerticalGroup("Left")]
         public int BallTargetCount;
 
-        [VerticalGroup("Row/Right")]
+        [VerticalGroup("Right")]
         [PreviewField(Alignment = ObjectFieldAlignment.Center, Height = 100)]
         [HideLabel]
         [AssetSelector(Paths = "Assets/Prefabs/Game/Tubes", ExpandAllMenuItems = false,

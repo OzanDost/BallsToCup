@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using Data;
 using ThirdParty;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Game
 {
@@ -14,22 +16,45 @@ namespace Game
         private int _levelIndex;
         private bool _finishedAllLevels;
 
+
+        private void Awake()
+        {
+            AddListeners();
+        }
+
+        private void AddListeners()
+        {
+            Signals.Get<LevelSuccess>().AddListener(OnLevelSuccess);
+        }
+
+        private void OnLevelSuccess()
+        {
+            _levelIndex++;
+            SaveManager.SetLevelIndex(_levelIndex);
+        }
+
         public void Initialize()
         {
             _levelIndex = SaveManager.GetLevelIndex();
+        }
 
+        public void CreateLevel(bool retry = false)
+        {
             if (_levelIndex >= _levelList.Count)
             {
                 _finishedAllLevels = true;
             }
-        }
 
-        public void CreateLevel()
-        {
             var levelIndex = GetLevelIndex();
             var data = _levelList[levelIndex];
 
+            if (retry)
+            {
+                data = _lastActiveLevel;
+            }
+
             Signals.Get<RequestGameplayInitialize>().Dispatch(data);
+            _lastActiveLevel = data;
         }
 
 
@@ -37,7 +62,7 @@ namespace Game
         {
             if (_finishedAllLevels)
             {
-                return Random.Range(0, _levelList.Count);
+                return _levelIndex = Random.Range(0, _levelList.Count);
             }
 
             return _levelIndex;

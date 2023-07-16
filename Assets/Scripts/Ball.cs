@@ -5,11 +5,10 @@ namespace DefaultNamespace
 {
     public class Ball : MonoBehaviour
     {
-        public event Action<Ball> EnteredBowl;
-
-        private void OnTriggerEnter(Collider other)
+        [SerializeField] private MeshRenderer _meshRenderer;
+        public void SetMaterial(Material material)
         {
-            EnteredBowl?.Invoke(this);
+            _meshRenderer.material = material;
         }
     }
 }

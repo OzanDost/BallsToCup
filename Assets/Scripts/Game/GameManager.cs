@@ -1,3 +1,4 @@
+using DefaultNamespace;
 using Enums;
 using ThirdParty;
 using UnityEngine;
@@ -7,7 +8,7 @@ namespace Game
     public class GameManager : MonoBehaviour
     {
         [SerializeField] private LevelManager _levelManager;
-        public GameState CurrentGameState { get; private set; }
+        private GameState CurrentGameState { get; set; }
 
         private void Awake()
         {
@@ -27,6 +28,25 @@ namespace Game
         {
             Signals.Get<FakeLoadingFinished>().AddListener(OnFakeLoadingFinished);
             Signals.Get<PlayButtonClicked>().AddListener(OnPlayButtonClicked);
+            Signals.Get<LevelFailed>().AddListener(OnLevelFailed);
+            Signals.Get<LevelSuccess>().AddListener(OnLevelSuccess);
+            Signals.Get<LevelQuitRequested>().AddListener(OnLevelQuitRequested);
+            Signals.Get<LevelRetryRequested>().AddListener(OnLevelRetryRequested);
+        }
+
+        private void OnLevelQuitRequested()
+        {
+            ChangeGameState(GameState.Menu);
+        }
+
+        private void OnLevelFailed()
+        {
+            ChangeGameState(GameState.Fail);
+        }
+
+        private void OnLevelSuccess()
+        {
+            ChangeGameState(GameState.Success);
         }
 
         private void OnFakeLoadingFinished()
@@ -37,6 +57,12 @@ namespace Game
         private void OnPlayButtonClicked()
         {
             _levelManager.CreateLevel();
+            ChangeGameState(GameState.Gameplay);
+        }
+
+        private void OnLevelRetryRequested()
+        {
+            _levelManager.CreateLevel(true);
             ChangeGameState(GameState.Gameplay);
         }
 
@@ -51,6 +77,7 @@ namespace Game
         {
             RefreshRate refreshRate = Screen.currentResolution.refreshRateRatio;
             Application.targetFrameRate = (int)refreshRate.numerator % 60 == 0 ? 60 : (int)refreshRate.numerator;
+            ConfigHelper.Initialize();
         }
     }
 }

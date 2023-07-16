@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Level_Test_2
   m_EditorClassIdentifier: 
   _levelId: 2
-  _ballCount: 15
+  _ballCount: 25
   _ballTargetCount: 15
   _tube: {fileID: 3495605571246980654, guid: 4af044ed9cb3043d8be2c8b1113ba7d7, type: 3}

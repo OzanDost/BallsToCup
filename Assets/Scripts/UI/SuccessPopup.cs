@@ -52,7 +52,6 @@ namespace UI.Popups
             }
 
             int startNumber = 0;
-
         }
 
         protected override void On_UIClose()
@@ -65,6 +64,7 @@ namespace UI.Popups
 
         private void OnContinueButtonClicked()
         {
+            Signals.Get<PlayButtonClicked>().Dispatch();
         }
     }
 

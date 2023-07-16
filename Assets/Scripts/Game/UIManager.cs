@@ -23,14 +23,7 @@ namespace Game
         private void AddListeners()
         {
             Signals.Get<GameStateChanged>().AddListener(OnGameStateChanged);
-            Signals.Get<LevelFinished>().AddListener(OnLevelFinished);
         }
-
-        private void OnLevelFinished(bool isSuccess)
-        {
-            _uiFrame.OpenWindow(isSuccess ? ScreenIds.SuccessPopup : ScreenIds.FakeRewardedPopup);
-        }
-
 
         private void OnRewardedPopupRequested(Action successActionCallBack, Action failedActionCallBack)
         {
@@ -54,6 +47,16 @@ namespace Game
             if (newState == GameState.Gameplay)
             {
                 _uiFrame.OpenWindow(ScreenIds.GameplayWindow);
+            }
+
+            if (newState == GameState.Success)
+            {
+                _uiFrame.OpenWindow(ScreenIds.SuccessPopup);
+            }
+
+            if (newState == GameState.Fail)
+            {
+                _uiFrame.OpenWindow(ScreenIds.FailPopup);
             }
         }
     }

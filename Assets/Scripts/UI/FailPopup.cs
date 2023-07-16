@@ -1,3 +1,4 @@
+using ThirdParty;
 using ThirdParty.uiframework.Window;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,10 +19,12 @@ namespace UI
 
         private void OnQuitButtonClicked()
         {
+            Signals.Get<LevelQuitRequested>().Dispatch();
         }
 
         private void OnRetryButtonClicked()
         {
+            Signals.Get<LevelRetryRequested>().Dispatch();
         }
     }
 }
