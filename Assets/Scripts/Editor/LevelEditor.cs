@@ -31,12 +31,8 @@ namespace Editor
         [HorizontalGroup("row")]
         [SerializeField] private LevelDataEditorWrapper _levelDataEditorWrapper = new();
 
-
-        // [HorizontalGroup("row")]
-        // [PreviewField]
-        // [ListDrawerSettings(DefaultExpandedState = true, ShowFoldout = true, HideAddButton = true,
-        //     HideRemoveButton = true)]
-        // [SerializeField] private List<Material> _ballMaterial;
+        private GameConfig _gameConfig;
+        
 
         private Ball _ballPrefab;
 
@@ -44,14 +40,19 @@ namespace Editor
         public static void ShowWindow()
         {
             GetWindow<LevelEditor>();
-
-            EditorApplication.playModeStateChanged += EditorApplicationOnplayModeStateChanged;
         }
 
         private static void EditorApplicationOnplayModeStateChanged(PlayModeStateChange playMode)
         {
             if (playMode == PlayModeStateChange.EnteredPlayMode)
             {
+                var tubesInScene = FindObjectsOfType<Tube>();
+                foreach (var tube in tubesInScene)
+                {
+                    DestroyImmediate(tube.gameObject);
+                }
+
+                EditorUtility.ClearProgressBar();
                 GetWindow<LevelEditor>().Close();
             }
         }
@@ -160,9 +161,14 @@ namespace Editor
 
             for (int i = 0; i < count; i++)
             {
+                EditorUtility.DisplayProgressBar("Populating Balls",
+                    $"Please wait...\t {Mathf.RoundToInt(i / (float)count * 100)}%", i / (float)count);
                 var addedBall = PrefabUtility.InstantiatePrefab(ball) as Ball;
                 addedBall.transform.position = localPos + randomOffset;
                 addedBall.transform.SetParent(target, true);
+
+                addedBall.SetMaterial(_gameConfig.BallMaterials[Random.Range(0, _gameConfig.BallMaterials.Count)]);
+                addedBall.SetPhysicMaterial(_gameConfig.BallPhysicMaterial);
                 addedBalls.Add(addedBall);
                 Physics.Simulate(Time.fixedDeltaTime);
                 yield return new EditorWaitForSeconds(0.1f);
@@ -170,12 +176,15 @@ namespace Editor
 
             for (int i = 0; i < count * 2; i++)
             {
+                EditorUtility.DisplayProgressBar("Simulating Ball Physics",
+                    $"Please wait...\t{Mathf.RoundToInt(i / (count * 2f) * 100)}%", i / (count * 2f));
                 Physics.Simulate(Time.fixedDeltaTime);
                 yield return new EditorWaitForSeconds(0.2f);
             }
 
             tube.AssignBalls(addedBalls);
             completeAction?.Invoke();
+            EditorUtility.ClearProgressBar();
         }
 
         private bool RaiseWarning(string message)
@@ -191,12 +200,17 @@ namespace Editor
         protected override void OnEnable()
         {
             base.OnEnable();
+            _gameConfig = Resources.Load<GameConfig>(PathHelper.GameConfigPath);
+            EditorApplication.playModeStateChanged -= EditorApplicationOnplayModeStateChanged;
+            EditorApplication.playModeStateChanged += EditorApplicationOnplayModeStateChanged;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
+
             Physics.simulationMode = SimulationMode.FixedUpdate;
+            EditorApplication.playModeStateChanged -= EditorApplicationOnplayModeStateChanged;
         }
     }
 

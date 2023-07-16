@@ -49,6 +49,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 7614586066611282714}
+  _sphereCollider: {fileID: 9100072354980663891}
+  _rigidbody: {fileID: 6023674301845834469}
 --- !u!33 &6672111517547187759
 MeshFilter:
   m_ObjectHideFlags: 0

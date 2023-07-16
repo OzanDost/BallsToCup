@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36383b209dc34e2fb74a4e4821b47947, type: 3}
+  m_Name: GameConfig
+  m_EditorClassIdentifier: 
+  _rotationSpeed: 150
+  _centerDistanceSensitivity: 1
+  _minInputThreshold: 0.01
+  _ballPhysicMaterial: {fileID: 13400000, guid: 27c0ed9b738a7494e8f5b8d6b8342cbc,
+    type: 2}
+  _ballMaterials:
+  - {fileID: 2100000, guid: 7c59c9363e7f54b66b25afb14f6f0af2, type: 2}
+  - {fileID: 2100000, guid: 1de5da27b4cc64a9dbf47ea40c153cba, type: 2}
+  - {fileID: 2100000, guid: 79373639b08b749dbb03ba50b92b4d77, type: 2}
+  - {fileID: 2100000, guid: e386630ac63244c35b62979c67444bdf, type: 2}
+  - {fileID: 2100000, guid: e386630ac63244c35b62979c67444bdf, type: 2}
+  - {fileID: 2100000, guid: a653739f8dab2405c8e8519f4caaca43, type: 2}

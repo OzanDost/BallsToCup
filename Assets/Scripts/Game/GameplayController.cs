@@ -10,7 +10,6 @@ namespace Game
         [SerializeField] private InputController _inputController;
         [SerializeField] private Transform _targetPos;
         [SerializeField] private GameObject _gameArea;
-        [SerializeField] private float _rotationSpeed = 1f;
 
         private Tube _tube;
         private int _totalBallCount;
@@ -22,7 +21,6 @@ namespace Game
         private float _rotationAngle;
         private bool _isGivingInput;
 
-        private bool _initialized;
 
         private void Awake()
         {
@@ -59,8 +57,7 @@ namespace Game
             _totalBallCount = data.BallCount;
 
             Signals.Get<GameplayInitialized>().Dispatch(data);
-            _initialized = true;
-            _inputController.Initialize(data.Tube);
+            _inputController.Initialize(_tube);
         }
 
         private void OnBallEnteredCup()
@@ -95,26 +92,13 @@ namespace Game
                 }
                 else
                 {
-                    Signals.Get<LevelFailed>().Dispatch();
+                    if (!_levelFinished)
+                    {
+                        Signals.Get<LevelFailed>().Dispatch();
+                        _levelFinished = true;
+                    }
                 }
             }
-        }
-
-        private void Update()
-        {
-            if (!_initialized) return;
-#if UNITY_EDITOR
-
-            if (Input.GetKey(KeyCode.A))
-            {
-                _tube.BowlContainer.Rotate(Vector3.forward * (_rotationSpeed * Time.fixedDeltaTime));
-            }
-
-            if (Input.GetKey(KeyCode.D))
-            {
-                _tube.BowlContainer.Rotate(Vector3.forward * (-_rotationSpeed * Time.fixedDeltaTime));
-            }
-#endif
         }
 
         private void LoadTube(Tube tube)
@@ -135,7 +119,6 @@ namespace Game
             _fellOutBallCount = 0;
             _gameArea.SetActive(false);
             _levelFinished = false;
-            _initialized = false;
 
             _inputController.Reset();
         }

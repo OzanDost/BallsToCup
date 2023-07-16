@@ -4,7 +4,6 @@ using Enums;
 using ThirdParty;
 
 public class GameStateChanged : ASignal<GameState, GameState>{} 
-public class RequestGameStateChange : ASignal<GameState>{}
 public class FakeLoadingFinished : ASignal{}
 public class SufficientBallCountReached : ASignal{}
 public class LevelSuccess : ASignal{}

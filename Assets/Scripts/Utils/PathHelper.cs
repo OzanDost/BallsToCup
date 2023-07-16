@@ -10,6 +10,6 @@ namespace Utils
         public const string LevelResourcesPath = "Assets/Resources/Levels/";
         public const string BallPath = "Assets/Prefabs/Game/Ball.prefab";
         public const string BallReleaserPath = "Assets/Prefabs/Game/BallReleaser.prefab";
-        public const string GameConfigPath = "";
+        public const string GameConfigPath = "GameConfig";
     }
 }

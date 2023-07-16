@@ -1,8 +1,6 @@
-using System;
 using Enums;
 using ThirdParty;
 using ThirdParty.uiframework;
-using UI.Popups;
 using UnityEngine;
 using Utils;
 
@@ -24,13 +22,6 @@ namespace Game
         {
             Signals.Get<GameStateChanged>().AddListener(OnGameStateChanged);
         }
-
-        private void OnRewardedPopupRequested(Action successActionCallBack, Action failedActionCallBack)
-        {
-            _uiFrame.OpenWindow(ScreenIds.FakeRewardedPopup,
-                new FakeRewardedPopupProperties(successActionCallBack, failedActionCallBack));
-        }
-
 
         private void OnGameStateChanged(GameState oldState, GameState newState)
         {
