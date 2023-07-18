@@ -1,4 +1,3 @@
-using System;
 using Data;
 using DefaultNamespace;
 using ThirdParty;
@@ -12,6 +11,7 @@ namespace UI.Misc
         [SerializeField] private TextMeshProUGUI _remainingBallsText;
 
         private int _count;
+        private int _totalBalls;
 
         private void Awake()
         {
@@ -21,19 +21,20 @@ namespace UI.Misc
 
         private void OnGameplayInitialized(LevelData data)
         {
-            _count = data.BallCount;
+            _count = _totalBalls = data.BallCount;
             SetBallText();
         }
 
         private void OnBallReleaseRequested(Ball ball)
         {
             _count--;
+            if (_count < 0) _count = 0;
             SetBallText();
         }
 
         private void SetBallText()
         {
-            _remainingBallsText.text = $"Remaining Balls\n{_count}/{_count}";
+            _remainingBallsText.text = $"Remaining Balls\n{_count}/{_totalBalls}";
         }
     }
 }
