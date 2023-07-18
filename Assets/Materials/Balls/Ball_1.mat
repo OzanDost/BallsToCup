@@ -140,7 +140,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AdvancedTab: 0
+    - _AdvancedTab: 1
     - _AlbedoMapIntensity: 1
     - _AlphaClipping: 0
     - _AlphaCutoff: 0.5
@@ -227,8 +227,8 @@ Material:
     - _ZTest: 4
     - _ZWrite: 1
     m_Colors:
-    - _AlbedoColor: {r: 0.050980393, g: 0.23137255, b: 0.4, a: 0.5019608}
-    - _Color: {r: 0.050980374, g: 0.2313725, b: 0.39999998, a: 0.5019608}
+    - _AlbedoColor: {r: 0.050980374, g: 0.2313725, b: 0.39999998, a: 1}
+    - _Color: {r: 0.05098036, g: 0.23137248, b: 0.39999995, a: 1}
     - _DissolveBorderColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GoochBrightColor: {r: 1, g: 1, b: 1, a: 1}

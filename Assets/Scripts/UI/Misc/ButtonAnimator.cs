@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Lofelt.NiceVibrations;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -49,6 +50,7 @@ namespace UI.Misc
 
         public void OnPointerClick(PointerEventData eventData)
         {
+            HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
         }
     }
 }

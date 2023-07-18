@@ -187,6 +187,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bowl
       objectReference: {fileID: 0}
+    - target: {fileID: 1690479623400085562, guid: fd165ad510f984301a60773b1092cc32,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6326884510738457552, guid: fd165ad510f984301a60773b1092cc32,
         type: 3}
       propertyPath: m_RootOrder

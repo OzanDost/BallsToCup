@@ -1,3 +1,4 @@
+using Data;
 using DefaultNamespace;
 using Sirenix.OdinInspector.Editor;
 using UnityEditor;
@@ -43,6 +44,7 @@ namespace Editor
         protected override void OnDisable()
         {
             base.OnDisable();
+            _propertyTree?.Dispose();
         }
     }
 }

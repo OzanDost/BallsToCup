@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c66ac370494883bb9f1bc7fffb2dbe, type: 3}
+  m_Name: Level_5
+  m_EditorClassIdentifier: 
+  _levelId: 5
+  _ballCount: 60
+  _ballTargetCount: 30
+  _tube: {fileID: 4783795463636624541, guid: 468cac61fd05140ac937675f3d2e3c3d, type: 3}

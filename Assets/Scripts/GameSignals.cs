@@ -12,10 +12,12 @@ public class LevelRetryRequested : ASignal{}
 public class LevelQuitRequested : ASignal{}
 
 
+public class FinishButtonClicked : ASignal{}
 public class PlayButtonClicked : ASignal{}
 public class RequestGameplayInitialize : ASignal<LevelData>{}
 public class GameplayInitialized : ASignal<LevelData>{}
 public class BallEnteredCup: ASignal{}
 public class BallFellOut : ASignal{}
-
 public class BallReleaseRequested:ASignal<Ball>{}
+
+public class RequestCameraShake:ASignal{}

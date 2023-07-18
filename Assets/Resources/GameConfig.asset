@@ -22,5 +22,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 1de5da27b4cc64a9dbf47ea40c153cba, type: 2}
   - {fileID: 2100000, guid: 79373639b08b749dbb03ba50b92b4d77, type: 2}
   - {fileID: 2100000, guid: e386630ac63244c35b62979c67444bdf, type: 2}
-  - {fileID: 2100000, guid: e386630ac63244c35b62979c67444bdf, type: 2}
   - {fileID: 2100000, guid: a653739f8dab2405c8e8519f4caaca43, type: 2}
+  _ballRigidbody: {fileID: 6023674301845834469, guid: 69fb418ab2fa34ca68de4cba6315ed32,
+    type: 3}
