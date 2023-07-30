@@ -44,21 +44,28 @@ namespace Game.Managers
 
             if (InputHandler.GetMouseButton())
             {
+                // Get current touch position and calculate direction from center
                 Vector2 currentTouchPosition = InputHandler.GetMousePositionVector2();
                 Vector2 directionFromCenter = currentTouchPosition - _screenCenter;
                 Vector2 previousDirectionFromCenter = _initialTouchPosition - _screenCenter;
 
+                // Calculate angle difference between previous and current direction
                 float angleDifference = Vector2.SignedAngle(previousDirectionFromCenter, directionFromCenter);
 
+                // If angle difference is below threshold, do nothing
                 if (Mathf.Abs(angleDifference) < _minInputThreshold) return;
 
+                // Calculate distance factor based on distance from center
                 float distanceFactor = directionFromCenter.magnitude / _screenCenter.magnitude;
 
+                // Adjust rotation speed based on distance factor
                 float adjustedRotationSpeed = _rotationSpeed * Mathf.Pow(distanceFactor, _centerDistanceSensitivity);
 
+                // Apply rotation to the tube
                 _tube.transform.rotation *= Quaternion.Euler(0f, 0f,
                     angleDifference * adjustedRotationSpeed * Time.deltaTime);
 
+                // Update initial touch position
                 _initialTouchPosition = currentTouchPosition;
             }
         }
