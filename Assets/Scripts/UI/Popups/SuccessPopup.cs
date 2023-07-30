@@ -52,7 +52,7 @@ namespace UI.Popups
 
         private void OnContinueButtonClicked()
         {
-            EventDispatcher.Instance.PlayButtonClicked?.Invoke();
+            EventDispatcher.PlayButtonClicked?.Invoke();
         }
     }
 }

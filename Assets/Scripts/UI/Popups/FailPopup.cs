@@ -17,12 +17,12 @@ namespace UI.Popups
 
         private void OnQuitButtonClicked()
         {
-            EventDispatcher.Instance.LevelQuitRequested?.Invoke();
+            EventDispatcher.LevelQuitRequested?.Invoke();
         }
 
         private void OnRetryButtonClicked()
         {
-            EventDispatcher.Instance.LevelRetryRequested?.Invoke();
+            EventDispatcher.LevelRetryRequested?.Invoke();
         }
     }
 }

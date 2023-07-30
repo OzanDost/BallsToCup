@@ -1,4 +1,3 @@
-using DefaultNamespace;
 using Game;
 using UnityEngine;
 

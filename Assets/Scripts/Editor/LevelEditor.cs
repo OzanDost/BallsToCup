@@ -3,37 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using Data;
 using DefaultNamespace;
+using DG.DemiEditor;
 using Game;
-using Sirenix.OdinInspector;
-using Sirenix.OdinInspector.Editor;
-using Sirenix.Utilities;
 using Unity.EditorCoroutines.Editor;
 using UnityEditor;
 using UnityEngine;
 using Utils;
-using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 namespace Editor
 {
     public class LevelEditor : EditorWindow
     {
-        [EnumToggleButtons]
-        [OnValueChanged("OnModeChanged")]
         [SerializeField] private LevelEditorMode _mode;
 
-        [ShowIf("@_mode == LevelEditorMode.Edit")]
-        [LabelText("Level")]
-        [AssetSelector(Paths = PathHelper.LevelResourcesPath)]
-        [OnValueChanged("OnLoadedLevelChanged")]
         [SerializeField] private LevelData _loadedLevelData;
 
-        [HideLabel]
-        [Title("Level Data")]
-        [HorizontalGroup("row")]
         [SerializeField] private LevelDataEditorWrapper _levelDataEditorWrapper = new();
 
         private GameConfig _gameConfig;
+        private LevelEditorMode _lastMode;
+        private LevelData _lastLevelData;
 
 
         private Ball _ballPrefab;
@@ -49,6 +39,19 @@ namespace Editor
             // EnumToggleButtons equivalent
             _mode = (LevelEditorMode)GUILayout.Toolbar((int)_mode, Enum.GetNames(typeof(LevelEditorMode)));
 
+            //Simulate the OnValueChanged for Mode
+            if (_lastMode != _mode)
+            {
+                OnModeChanged();
+                _lastMode = _mode;
+            }
+
+            if (_lastLevelData != _loadedLevelData)
+            {
+                OnLoadedLevelChanged();
+                _lastLevelData = _loadedLevelData;
+            }
+
             // ShowIf equivalent
             if (_mode == LevelEditorMode.Edit)
             {
@@ -59,19 +62,21 @@ namespace Editor
                 if (_loadedLevelData != null)
                 {
                     _levelDataEditorWrapper.SetFields(_loadedLevelData);
-                    
+
                     // Display fields from LevelDataEditorWrapper
                     _levelDataEditorWrapper.LevelName =
                         EditorGUILayout.TextField("Level Name", _levelDataEditorWrapper.LevelName);
-                    _levelDataEditorWrapper.LevelId = EditorGUILayout.IntField("Level ID", _levelDataEditorWrapper.LevelId);
+                    _levelDataEditorWrapper.LevelId =
+                        EditorGUILayout.IntField("Level ID", _levelDataEditorWrapper.LevelId);
                     _levelDataEditorWrapper.BallCount =
                         EditorGUILayout.IntField("Ball Count", _levelDataEditorWrapper.BallCount);
                     _levelDataEditorWrapper.BallTargetCount =
                         EditorGUILayout.IntField("Ball Target Count", _levelDataEditorWrapper.BallTargetCount);
                     _levelDataEditorWrapper.Tube =
-                        (GameObject)EditorGUILayout.ObjectField("Tube", _levelDataEditorWrapper.Tube, typeof(GameObject),
+                        (GameObject)EditorGUILayout.ObjectField("Tube", _levelDataEditorWrapper.Tube,
+                            typeof(GameObject),
                             false);
-                    
+
                     //Draw the Asset Preview of the Tube
                     if (_levelDataEditorWrapper.Tube != null)
                     {
@@ -81,21 +86,21 @@ namespace Editor
                             GUILayout.Label(previewImage);
                         }
                     }
+
+                    if (GUILayout.Button("Save Level"))
+                    {
+                        SaveLevel();
+                    }
+                }
+            }
+            else
+            {
+                if (GUILayout.Button("Create Level"))
+                {
+                    CreateLevel();
                 }
             }
 
-            
-            
-
-            if (GUILayout.Button("Save Level"))
-            {
-                SaveLevel();
-            }
-
-            if (GUILayout.Button("Create Level"))
-            {
-                CreateLevel();
-            }
 
             if (GUILayout.Button("Populate Balls"))
             {
@@ -127,12 +132,11 @@ namespace Editor
         private void OnLoadedLevelChanged()
         {
             if (_loadedLevelData == null) return;
+            _levelDataEditorWrapper = new();
             _levelDataEditorWrapper.SetFields(_loadedLevelData);
         }
 
 
-        [Button]
-        [ShowIf("@_mode == LevelEditorMode.Edit")]
         private void SaveLevel()
         {
             if (!RaiseWarning("You are about to overwrite an existing LevelData. Are you sure?"))
@@ -141,7 +145,7 @@ namespace Editor
             }
 
             if (!_loadedLevelData.name.Equals(_levelDataEditorWrapper.LevelName) &&
-                !_levelDataEditorWrapper.LevelName.IsNullOrWhitespace())
+                !_levelDataEditorWrapper.LevelName.IsNullOrEmpty())
             {
                 var path = AssetDatabase.GetAssetPath(_loadedLevelData);
                 AssetDatabase.RenameAsset(path, _levelDataEditorWrapper.LevelName);
@@ -156,8 +160,6 @@ namespace Editor
             EditorGUIUtility.PingObject(_loadedLevelData);
         }
 
-        [Button]
-        [ShowIf("@_mode == LevelEditorMode.Create")]
         private void CreateLevel()
         {
             var levelToCreate = CreateInstance<LevelData>();
@@ -172,7 +174,6 @@ namespace Editor
             EditorGUIUtility.PingObject(levelToCreate);
         }
 
-        [Button]
         private void PopulateBalls()
         {
             if (_levelDataEditorWrapper == null || _levelDataEditorWrapper.Tube == null)
@@ -253,11 +254,6 @@ namespace Editor
             return EditorUtility.DisplayDialog("Warning", message, "Yes", "No");
         }
 
-        private bool CanValidateLevel()
-        {
-            return true;
-        }
-
         protected void OnEnable()
         {
             _gameConfig = Resources.Load<GameConfig>(PathHelper.GameConfigPath);
@@ -279,26 +275,12 @@ namespace Editor
     }
 
     [Serializable]
-    public class LevelDataEditorWrapper : Object
+    public class LevelDataEditorWrapper
     {
-        // [HorizontalGroup("Row")]
-        [VerticalGroup("Left")]
         public string LevelName;
-
-        [VerticalGroup("Left")]
         public int LevelId;
-
-        [VerticalGroup("Left")]
         public int BallCount;
-
-        [VerticalGroup("Left")]
         public int BallTargetCount;
-
-        [VerticalGroup("Right")]
-        [PreviewField(Alignment = ObjectFieldAlignment.Center, Height = 100)]
-        [HideLabel]
-        [AssetSelector(Paths = "Assets/Prefabs/Game/Tubes", ExpandAllMenuItems = false,
-            Filter = "t: prefab")]
         public GameObject Tube;
 
         public void SetFields(LevelData loadedLevelData)
@@ -308,38 +290,6 @@ namespace Editor
             BallTargetCount = loadedLevelData.BallTargetCount;
             Tube = loadedLevelData.Tube.gameObject;
             LevelName = loadedLevelData.name;
-        }
-    }
-    
-    [CustomEditor(typeof(LevelDataEditorWrapper))]
-    public class LevelDataEditorWrapperEditor : UnityEditor.Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            LevelDataEditorWrapper myTarget = (LevelDataEditorWrapper)target;
-
-            // Draw fields for LevelName, LevelId, BallCount, and BallTargetCount
-            myTarget.LevelName = EditorGUILayout.TextField("Level Name", myTarget.LevelName);
-            myTarget.LevelId = EditorGUILayout.IntField("Level ID", myTarget.LevelId);
-            myTarget.BallCount = EditorGUILayout.IntField("Ball Count", myTarget.BallCount);
-            myTarget.BallTargetCount = EditorGUILayout.IntField("Ball Target Count", myTarget.BallTargetCount);
-
-            // Draw field for Tube with a preview
-            if (GUILayout.Button("Select Tube"))
-            {
-                TubeSelectorWindow window = EditorWindow.GetWindow<TubeSelectorWindow>();
-                window.OnTubeSelected = tube => { myTarget.Tube = tube; };
-                window.Show();
-            }
-
-            if (myTarget.Tube != null)
-            {
-                Texture2D previewImage = AssetPreview.GetAssetPreview(myTarget.Tube);
-                if (previewImage != null)
-                {
-                    GUILayout.Label(previewImage, GUILayout.Height(100), GUILayout.Width(100));
-                }
-            }
         }
     }
 }

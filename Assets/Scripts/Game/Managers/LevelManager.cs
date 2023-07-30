@@ -22,7 +22,7 @@ namespace Game.Managers
 
         private void AddListeners()
         {
-            EventDispatcher.Instance.LevelSuccess += OnLevelSuccess;
+            EventDispatcher.LevelSuccess += OnLevelSuccess;
         }
 
         private void OnLevelSuccess()
@@ -51,7 +51,7 @@ namespace Game.Managers
                 data = _lastActiveLevel;
             }
 
-            EventDispatcher.Instance.RequestGameplayInitialize?.Invoke(data);
+            EventDispatcher.RequestGameplayInitialize?.Invoke(data);
             _lastActiveLevel = data;
         }
 

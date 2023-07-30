@@ -1,23 +1,17 @@
 using System.IO;
-using DefaultNamespace;
+using DG.DemiEditor;
 using Game;
-using Sirenix.OdinInspector;
-using Sirenix.OdinInspector.Editor;
-using Sirenix.Utilities;
 using UnityEditor;
 using UnityEngine;
 using Utils;
 
 namespace Editor
 {
-    public class TubeGenerator : OdinEditorWindow
+    public class TubeGenerator : EditorWindow
     {
-        [AssetSelector(Paths = PathHelper.SvgPath, ExpandAllMenuItems = false, DrawDropdownForListElements = false,
-            DisableListAddButtonBehaviour = true)]
-        [OnValueChanged("OnSVGChanged")]
         [SerializeField] private Object _svg;
 
-        [Multiline(5)]
+        [TextArea]
         [SerializeField] private string _svgContent;
 
         [SerializeField] private string _name;
@@ -27,6 +21,8 @@ namespace Editor
         private GameObject _tubeToCreate;
         private Transform _pipeGeneratorParent;
 
+        private Object _lastSvg;
+
 
         [MenuItem("Tools/Tube Mesh Generator")]
         public static void ShowWindow()
@@ -34,17 +30,33 @@ namespace Editor
             GetWindow<TubeGenerator>();
         }
 
-        public void OnSVGChanged()
+        private void OnSVGChanged()
         {
             var svgPath = AssetDatabase.GetAssetPath(_svg).Replace("Assets/", "");
             var fullPath = Path.Combine(Application.dataPath, svgPath);
             _svgContent = File.ReadAllText(fullPath);
         }
 
-        [Button]
+        private void OnGUI()
+        {
+            _svg = EditorGUILayout.ObjectField("SVG", _svg, typeof(Object), false);
+            if (_svg != null && _svg != _lastSvg)
+            {
+                OnSVGChanged();
+                _lastSvg = _svg;
+            }
+        
+            _svgContent = EditorGUILayout.TextField("SVG Content", _svgContent);
+            _name = EditorGUILayout.TextField("Name", _name);
+
+            if (GUILayout.Button("Generate Mesh"))
+            {
+                GenerateMesh();
+            }
+        }
         private void GenerateMesh()
         {
-            if (_svgContent.IsNullOrWhitespace())
+            if (_svgContent.IsNullOrEmpty())
             {
                 EditorUtility.DisplayDialog("Error", "SVG content is empty", "Ok");
                 return;
@@ -63,18 +75,15 @@ namespace Editor
             CreatePrefab(mesh);
         }
 
-        protected override void OnEnable()
+        private void OnEnable()
         {
-            base.OnEnable();
 
             ClearScene();
             LoadGenerator();
         }
 
-        protected override void OnDisable()
+        private void OnDisable()
         {
-            base.OnDisable();
-
             if (_pipeGenerator != null)
                 DestroyImmediate(_pipeGenerator.gameObject);
         }
@@ -110,8 +119,7 @@ namespace Editor
             var tubeEnd = _pipeGenerator.SplineComputer.EvaluatePosition(1d);
             tubeEnd.x -= tube.transform.localPosition.x;
 
-            var targetTubePos =
-                bowl.Entry.localPosition - tubeStart + Vector3.up * ballReleaser.BoxCollider.size.y / 2f;
+            var targetTubePos = bowl.Entry.localPosition - tubeStart;
             tube.transform.localPosition = targetTubePos;
             ballReleaser.transform.localPosition = tubeEnd;
 

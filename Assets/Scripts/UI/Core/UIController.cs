@@ -1,5 +1,4 @@
 using System;
-using UI.Misc;
 using UnityEngine;
 
 namespace UI.Core
@@ -12,9 +11,12 @@ namespace UI.Core
 
         private void Awake()
         {
+            gameObject.SetActive(true);
             foreach (var pair in _screens)
             {
+                ShowWindow(pair.Key);
                 pair.Value.CloseRequest += HideWindow;
+                HideWindow(pair.Value);
             }
         }
 
@@ -50,12 +52,7 @@ namespace UI.Core
         public void HideWindow(ScreenEnum screen)
         {
             var window = _screens[screen];
-            window.OnClose();
-
-            if (window.IsPopup)
-            {
-                _darkenBackground.SetActive(false);
-            }
+            HideWindow(window);
         }
 
         private void HideWindow(Window window)

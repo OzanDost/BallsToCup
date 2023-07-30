@@ -6,16 +6,19 @@ namespace Game.Managers
 {
     public class UIManager : MonoBehaviour
     {
-        [SerializeField] private UIController _uiController;
+        [SerializeField] private UIController _uiControllerPrefab;
+
+        private UIController _uiController;
 
         private void Awake()
         {
+            _uiController = Instantiate(_uiControllerPrefab);
             AddListeners();
         }
 
         private void AddListeners()
         {
-            EventDispatcher.Instance.GameStateChanged += OnGameStateChanged;
+            EventDispatcher.GameStateChanged += OnGameStateChanged;
         }
 
         private void OnGameStateChanged(GameState oldState, GameState newState)

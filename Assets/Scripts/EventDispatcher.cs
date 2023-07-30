@@ -4,28 +4,22 @@ using DefaultNamespace;
 using Enums;
 using UnityEngine;
 
-public class EventDispatcher : MonoBehaviour
+public static class EventDispatcher 
 {
-    public static EventDispatcher Instance { get; private set; }
 
-    private void Awake()
-    {
-        Instance = this;
-    }
-
-    public Action<GameState, GameState> GameStateChanged { get; set; }
-    public Action LevelSuccess { get; set; }
-    public Action LevelFailed { get; set; }
-    public Action LevelQuitRequested { get; set; }
-    public Action LevelRetryRequested { get; set; }
-    public Action PlayButtonClicked { get; set; }
-    public Action FinishButtonClicked { get; set; }
-    public Action<LevelData> RequestGameplayInitialize { get; set; }
-    public Action<LevelData> GameplayInitialized { get; set; }
-    public Action<Ball> BallReleaseRequested { get; set; }
-    public Action BallEnteredCup { get; set; }
-    public Action BallFellOut { get; set; }
-    public Action FakeLoadingFinished { get; set; }
-    public Action SufficientBallCountReached { get; set; }
-    public Action CameraShakeRequested { get; set; }
+    public static Action<GameState, GameState> GameStateChanged { get; set; }
+    public static Action LevelSuccess { get; set; }
+    public static Action LevelFailed { get; set; }
+    public static Action LevelQuitRequested { get; set; }
+    public static Action LevelRetryRequested { get; set; }
+    public static Action PlayButtonClicked { get; set; }
+    public static Action FinishButtonClicked { get; set; }
+    public static Action<LevelData> RequestGameplayInitialize { get; set; }
+    public static Action<LevelData> GameplayInitialized { get; set; }
+    public static Action<Ball> BallReleaseRequested { get; set; }
+    public static Action BallEnteredCup { get; set; }
+    public static Action BallFellOut { get; set; }
+    public static Action FakeLoadingFinished { get; set; }
+    public static Action SufficientBallCountReached { get; set; }
+    public static Action CameraShakeRequested { get; set; }
 }

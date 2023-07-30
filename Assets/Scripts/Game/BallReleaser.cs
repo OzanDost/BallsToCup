@@ -12,7 +12,7 @@ namespace Game
         private void OnTriggerEnter(Collider other)
         {
             var ball = other.GetComponent<Ball>();
-            EventDispatcher.Instance.BallReleaseRequested?.Invoke(ball);
+            EventDispatcher.BallReleaseRequested?.Invoke(ball);
         }
     }
 }

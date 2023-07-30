@@ -31,12 +31,12 @@ namespace Game.Managers
 
         private void AddListeners()
         {
-            EventDispatcher.Instance.RequestGameplayInitialize += Initialize;
-            EventDispatcher.Instance.BallEnteredCup += OnBallEnteredCup;
-            EventDispatcher.Instance.BallFellOut += OnBallFellOut;
-            EventDispatcher.Instance.LevelQuitRequested += OnLevelQuitRequested;
-            EventDispatcher.Instance.FinishButtonClicked += FinishLevel;
-            EventDispatcher.Instance.LevelSuccess += OnLevelSuccess;
+            EventDispatcher.RequestGameplayInitialize += Initialize;
+            EventDispatcher.BallEnteredCup += OnBallEnteredCup;
+            EventDispatcher.BallFellOut += OnBallFellOut;
+            EventDispatcher.LevelQuitRequested += OnLevelQuitRequested;
+            EventDispatcher.FinishButtonClicked += FinishLevel;
+            EventDispatcher.LevelSuccess += OnLevelSuccess;
         }
 
         private void OnLevelSuccess()
@@ -59,7 +59,7 @@ namespace Game.Managers
             _ballTargetCount = data.BallTargetCount;
             _totalBallCount = data.BallCount;
 
-            EventDispatcher.Instance.GameplayInitialized?.Invoke(data);
+            EventDispatcher.GameplayInitialized?.Invoke(data);
             
             _inputController.Initialize(_tube);
         }
@@ -70,7 +70,7 @@ namespace Game.Managers
 
             if (_enteredBallCount >= _ballTargetCount)
             {
-                EventDispatcher.Instance.SufficientBallCountReached?.Invoke();
+                EventDispatcher.SufficientBallCountReached?.Invoke();
             }
 
             CheckProcessedBalls();
@@ -84,7 +84,7 @@ namespace Game.Managers
 
             if (!_levelFinished)
             {
-                EventDispatcher.Instance.CameraShakeRequested?.Invoke();
+                EventDispatcher.CameraShakeRequested?.Invoke();
             }
         }
 
@@ -104,7 +104,7 @@ namespace Game.Managers
                 {
                     if (!_levelFinished)
                     {
-                        EventDispatcher.Instance.LevelFailed?.Invoke();
+                        EventDispatcher.LevelFailed?.Invoke();
                         _levelFinished = true;
                     }
                 }
@@ -121,7 +121,7 @@ namespace Game.Managers
 
             DOVirtual.DelayedCall(1f, () =>
             {
-                EventDispatcher.Instance.LevelSuccess?.Invoke();
+                EventDispatcher.LevelSuccess?.Invoke();
             });
         }
 

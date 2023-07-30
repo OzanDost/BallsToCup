@@ -22,9 +22,9 @@ namespace UI.Windows
             _quitButton.onClick.AddListener(OnQuitButtonClicked);
             _finishButton.onClick.AddListener(OnFinishButtonClicked);
 
-            EventDispatcher.Instance.SufficientBallCountReached += OnSufficientBallCountReached;
-            EventDispatcher.Instance.GameplayInitialized += OnGameplayInitialized;
-            EventDispatcher.Instance.LevelSuccess += OnLevelSuccess;
+            EventDispatcher.SufficientBallCountReached += OnSufficientBallCountReached;
+            EventDispatcher.GameplayInitialized += OnGameplayInitialized;
+            EventDispatcher.LevelSuccess += OnLevelSuccess;
         }
 
         private void OnLevelSuccess()
@@ -40,7 +40,7 @@ namespace UI.Windows
 
         private void OnFinishButtonClicked()
         {
-            EventDispatcher.Instance.FinishButtonClicked?.Invoke();
+            EventDispatcher.FinishButtonClicked?.Invoke();
             
             ToggleFinishButton(false);
         }
@@ -68,7 +68,7 @@ namespace UI.Windows
 
         private void OnQuitButtonClicked()
         {
-            EventDispatcher.Instance.LevelQuitRequested?.Invoke();
+            EventDispatcher.LevelQuitRequested?.Invoke();
         }
     }
 }

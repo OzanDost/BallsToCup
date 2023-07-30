@@ -15,6 +15,7 @@ namespace UI.Core
             if (!IsVisible)
             {
                 Debug.LogWarning($"The window {gameObject.name} is not open. It cannot be closed.");
+                return;
             }
 
             gameObject.SetActive(false);
@@ -26,6 +27,7 @@ namespace UI.Core
             if (IsVisible)
             {
                 Debug.LogWarning($"The window {gameObject.name} is already open. It cannot be opened again.");
+                return;
             }
 
             gameObject.SetActive(true);

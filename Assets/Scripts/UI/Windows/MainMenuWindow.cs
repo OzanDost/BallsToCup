@@ -15,7 +15,7 @@ namespace UI.Windows
 
         private void OnPlayButtonClicked()
         {
-            EventDispatcher.Instance.PlayButtonClicked?.Invoke();
+            EventDispatcher.PlayButtonClicked?.Invoke();
         }
     }
 }

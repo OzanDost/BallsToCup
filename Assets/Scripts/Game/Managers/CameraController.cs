@@ -1,8 +1,7 @@
 using DG.Tweening;
-using ThirdParty;
 using UnityEngine;
 
-namespace Game
+namespace Game.Managers
 {
     public class CameraController : MonoBehaviour
     {
@@ -17,7 +16,7 @@ namespace Game
 
         private void AddListeners()
         {
-            EventDispatcher.Instance.CameraShakeRequested += OnRequestCameraShake;
+            EventDispatcher.CameraShakeRequested += OnRequestCameraShake;
         }
 
         private void OnRequestCameraShake()

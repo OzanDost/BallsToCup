@@ -25,12 +25,12 @@ namespace Game.Managers
 
         private void AddListeners()
         {
-            EventDispatcher.Instance.FakeLoadingFinished += OnFakeLoadingFinished;
-            EventDispatcher.Instance.PlayButtonClicked += OnPlayButtonClicked;
-            EventDispatcher.Instance.LevelFailed += OnLevelFailed;
-            EventDispatcher.Instance.LevelSuccess += OnLevelSuccess;
-            EventDispatcher.Instance.LevelQuitRequested += OnLevelQuitRequested;
-            EventDispatcher.Instance.LevelRetryRequested += OnLevelRetryRequested;
+            EventDispatcher.FakeLoadingFinished += OnFakeLoadingFinished;
+            EventDispatcher.PlayButtonClicked += OnPlayButtonClicked;
+            EventDispatcher.LevelFailed += OnLevelFailed;
+            EventDispatcher.LevelSuccess += OnLevelSuccess;
+            EventDispatcher.LevelQuitRequested += OnLevelQuitRequested;
+            EventDispatcher.LevelRetryRequested += OnLevelRetryRequested;
         }
 
         private void OnLevelQuitRequested()
@@ -69,7 +69,7 @@ namespace Game.Managers
         {
             var oldGameState = CurrentGameState;
             CurrentGameState = newGameState;
-            EventDispatcher.Instance.GameStateChanged?.Invoke(oldGameState, newGameState);
+            EventDispatcher.GameStateChanged?.Invoke(oldGameState, newGameState);
         }
 
         private void ApplyConfigs()

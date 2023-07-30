@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using Dreamteck;
 using Dreamteck.Splines;
-using Sirenix.OdinInspector;
 using Unity.VectorGraphics;
 using UnityEngine;
 
@@ -17,13 +16,13 @@ public class PipeGenerator : MonoBehaviour
     [SerializeField] private float _scaleFactor = 0.05f;
     [SerializeField] private MeshFilter _filter;
 
-    [Button]
     public Mesh Generate(string svgText)
     {
         _splineComputer.SetPoints(Array.Empty<SplinePoint>());
 
         var textReader = new StringReader(svgText);
         var sceneInfo = SVGParser.ImportSVG(textReader);
+        
         var svgPath = sceneInfo.Scene.Root.Children[0];
         var segments = svgPath.Shapes[0].Contours[0].Segments;
 

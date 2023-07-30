@@ -22,7 +22,7 @@ namespace UI.Windows
         private void LoadingCompleted()
         {
             CloseRequest?.Invoke(this);
-            EventDispatcher.Instance.FakeLoadingFinished?.Invoke();
+            EventDispatcher.FakeLoadingFinished?.Invoke();
         }
 
         public override void OnClose()

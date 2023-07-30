@@ -11,7 +11,7 @@ namespace DefaultNamespace
 
         private void Start()
         {
-            EventDispatcher.Instance.GameplayInitialized += OnGameplayInitialized;
+            EventDispatcher.GameplayInitialized += OnGameplayInitialized;
         }
 
         private void OnGameplayInitialized(LevelData data)
@@ -25,7 +25,7 @@ namespace DefaultNamespace
             {
                 _addedBalls.Add(other.gameObject);
                 
-                EventDispatcher.Instance.BallEnteredCup?.Invoke();
+                EventDispatcher.BallEnteredCup?.Invoke();
             }
         }
     }

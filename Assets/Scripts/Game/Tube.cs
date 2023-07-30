@@ -24,7 +24,7 @@ namespace Game
 
         private void Start()
         {
-            EventDispatcher.Instance.BallReleaseRequested += OnBallReleaseRequested;
+            EventDispatcher.BallReleaseRequested += OnBallReleaseRequested;
         }
 
         private void OnBallReleaseRequested(Ball ball)

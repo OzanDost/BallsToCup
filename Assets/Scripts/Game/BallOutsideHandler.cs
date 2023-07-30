@@ -15,7 +15,7 @@ namespace Game
 
         private void AddListeners()
         {
-            EventDispatcher.Instance.GameplayInitialized += OnGameplayInitialized;
+            EventDispatcher.GameplayInitialized += OnGameplayInitialized;
         }
 
         private void OnGameplayInitialized(LevelData data)
@@ -28,7 +28,7 @@ namespace Game
             if (!_collidedBalls.Contains(other.gameObject))
             {
                 _collidedBalls.Add(other.gameObject);
-                EventDispatcher.Instance.BallFellOut?.Invoke();
+                EventDispatcher.BallFellOut?.Invoke();
             }
         }
     }

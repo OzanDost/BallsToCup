@@ -20,8 +20,8 @@ namespace Game
 
         private void AddListeners()
         {
-            EventDispatcher.Instance.GameplayInitialized += OnGameplayInitialized;
-            EventDispatcher.Instance.BallEnteredCup += OnBallEnteredCup;
+            EventDispatcher.GameplayInitialized += OnGameplayInitialized;
+            EventDispatcher.BallEnteredCup += OnBallEnteredCup;
         }
 
         private void OnBallEnteredCup()
