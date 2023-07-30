@@ -101,7 +101,7 @@ MonoBehaviour:
     hideOnForegroundLost: 1
     windowQueuePriority: 0
     isPopup: 0
-  playButton: {fileID: 544755254225699244}
+  _playButton: {fileID: 544755254225699244}
 --- !u!1 &3555349985799178807
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,8 +472,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4631a033e6526481fa2629204cff1ca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationSpeed: 3
-  subtractedScale: 0.1
+  _animationSpeed: 3
+  _subtractedScale: 0.1
 --- !u!1 &6257128971294356727
 GameObject:
   m_ObjectHideFlags: 0
@@ -609,8 +609,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4631a033e6526481fa2629204cff1ca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationSpeed: 3
-  subtractedScale: 0.1
+  _animationSpeed: 3
+  _subtractedScale: 0.1
 --- !u!1 &6979573581031349785
 GameObject:
   m_ObjectHideFlags: 0

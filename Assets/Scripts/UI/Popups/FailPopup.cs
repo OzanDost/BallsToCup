@@ -1,30 +1,28 @@
-using ThirdParty;
-using ThirdParty.uiframework.Window;
+using UI.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace UI.Popups
 {
-    public class FailPopup : AWindowController
+    public class FailPopup : Popup
     {
-        [SerializeField] private Button retryButton;
-        [SerializeField] private Button quitButton;
+        [SerializeField] private Button _retryButton;
+        [SerializeField] private Button _quitButton;
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
-            retryButton.onClick.AddListener(OnRetryButtonClicked);
-            quitButton.onClick.AddListener(OnQuitButtonClicked);
+            _retryButton.onClick.AddListener(OnRetryButtonClicked);
+            _quitButton.onClick.AddListener(OnQuitButtonClicked);
         }
 
         private void OnQuitButtonClicked()
         {
-            Signals.Get<LevelQuitRequested>().Dispatch();
+            EventDispatcher.Instance.LevelQuitRequested?.Invoke();
         }
 
         private void OnRetryButtonClicked()
         {
-            Signals.Get<LevelRetryRequested>().Dispatch();
+            EventDispatcher.Instance.LevelRetryRequested?.Invoke();
         }
     }
 }

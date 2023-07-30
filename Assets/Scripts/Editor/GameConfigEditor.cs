@@ -1,16 +1,14 @@
 using Data;
-using DefaultNamespace;
-using Sirenix.OdinInspector.Editor;
-using UnityEditor;
-using UnityEngine;
 using Utils;
 
 namespace Editor
 {
-    public class GameConfigEditor : OdinEditorWindow
+    using UnityEditor;
+    using UnityEngine;
+
+    public class GameConfigEditor : EditorWindow
     {
         private GameConfig _gameConfig;
-        private PropertyTree _propertyTree;
 
         [MenuItem("Tools/Game Config Editor")]
         public static void ShowWindow()
@@ -18,33 +16,74 @@ namespace Editor
             GetWindow<GameConfigEditor>();
         }
 
-        protected override void OnEnable()
+        private void OnEnable()
         {
-            base.OnEnable();
             _gameConfig = Resources.Load<GameConfig>(PathHelper.GameConfigPath);
-            _propertyTree = PropertyTree.Create(_gameConfig);
         }
 
-        protected override void DrawEditors()
+        private void OnGUI()
         {
-            base.DrawEditors();
             if (_gameConfig == null)
             {
-                _gameConfig = Resources.Load<GameConfig>(PathHelper.GameConfigPath);
+                EditorGUILayout.LabelField("GameConfig not found at path: " + PathHelper.GameConfigPath);
+                return;
             }
 
-            if (_propertyTree != null)
+            EditorGUI.BeginChangeCheck();
+
+            // Draw GUI controls for each property of GameConfig
+            GUIStyle titleStyle = new GUIStyle()
+                { fontSize = 14, fontStyle = FontStyle.Bold, normal = { textColor = Color.white } };
+            EditorGUILayout.LabelField("Input Settings", titleStyle);
+            SerializedObject serializedObject = new SerializedObject(_gameConfig);
+            SerializedProperty rotationSpeedProp = serializedObject.FindProperty("_rotationSpeed");
+            SerializedProperty centerDistanceSensitivityProp =
+                serializedObject.FindProperty("_centerDistanceSensitivity");
+            SerializedProperty minInputThresholdProp = serializedObject.FindProperty("_minInputThreshold");
+
+            SerializedProperty ballPhysicMaterialProp = serializedObject.FindProperty("_ballPhysicMaterial");
+            SerializedProperty ballRigidbodyProp = serializedObject.FindProperty("_ballRigidbody");
+
+            EditorGUILayout.PropertyField(rotationSpeedProp);
+            EditorGUILayout.PropertyField(centerDistanceSensitivityProp);
+            EditorGUILayout.PropertyField(minInputThresholdProp);
+
+            EditorGUILayout.LabelField("Ball Settings", titleStyle);
+
+            PhysicMaterial physicMaterial = (PhysicMaterial)ballPhysicMaterialProp.objectReferenceValue;
+            if (physicMaterial != null)
             {
-                _propertyTree = PropertyTree.Create(_gameConfig);
+                Editor physicMaterialEditor = Editor.CreateEditor(physicMaterial);
+                physicMaterialEditor.OnInspectorGUI();
             }
 
-            _propertyTree?.Draw();
-        }
+            for (int i = 0; i < _gameConfig.BallMaterials.Count; i++)
+            {
+                Material material = _gameConfig.BallMaterials[i];
+                if (material != null)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.ObjectField("Material " + i, material, typeof(Material), false);
+                    MaterialEditor materialEditor = (MaterialEditor)Editor.CreateEditor(material);
+                    materialEditor.OnPreviewGUI(GUILayoutUtility.GetRect(50, 50), EditorStyles.helpBox);
+                    EditorGUILayout.EndHorizontal();
+                }
+            }
 
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-            _propertyTree?.Dispose();
+            EditorGUILayout.PropertyField(ballRigidbodyProp);
+
+
+            Rigidbody rigidbody = (Rigidbody)ballRigidbodyProp.objectReferenceValue;
+            if (rigidbody != null)
+            {
+                Editor rigidbodyEditor = Editor.CreateEditor(rigidbody);
+                rigidbodyEditor.OnInspectorGUI();
+            }
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                serializedObject.ApplyModifiedProperties();
+            }
         }
     }
 }

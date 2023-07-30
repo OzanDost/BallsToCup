@@ -239,8 +239,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4631a033e6526481fa2629204cff1ca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationSpeed: 3
-  subtractedScale: 0.1
+  _animationSpeed: 3
+  _subtractedScale: 0.1
 --- !u!1 &2743006252632733702
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,14 +607,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c841e73987bb54f6aa4d34a77fd32a48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animIn: {fileID: 0}
-  animOut: {fileID: 0}
-  properties:
-    hideOnForegroundLost: 1
-    windowQueuePriority: 0
-    isPopup: 0
-  retryButton: {fileID: 1750428992650674904}
-  quitButton: {fileID: 2027772649458554239}
+  _retryButton: {fileID: 1750428992650674904}
+  _quitButton: {fileID: 2027772649458554239}
 --- !u!1 &4479904763001309880
 GameObject:
   m_ObjectHideFlags: 0
@@ -1022,8 +1016,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4631a033e6526481fa2629204cff1ca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationSpeed: 3
-  subtractedScale: 0.1
+  _animationSpeed: 3
+  _subtractedScale: 0.1
 --- !u!1 &7619202470297307529
 GameObject:
   m_ObjectHideFlags: 0

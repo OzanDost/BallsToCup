@@ -17,7 +17,7 @@ namespace Game
 
         private void AddListeners()
         {
-            Signals.Get<RequestCameraShake>().AddListener(OnRequestCameraShake);
+            EventDispatcher.Instance.CameraShakeRequested += OnRequestCameraShake;
         }
 
         private void OnRequestCameraShake()

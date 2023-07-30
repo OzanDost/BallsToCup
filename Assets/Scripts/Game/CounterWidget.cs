@@ -1,10 +1,9 @@
 using Data;
 using DG.Tweening;
-using ThirdParty;
 using TMPro;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace Game
 {
     public class CounterWidget : MonoBehaviour
     {
@@ -21,8 +20,8 @@ namespace DefaultNamespace
 
         private void AddListeners()
         {
-            Signals.Get<GameplayInitialized>().AddListener(OnGameplayInitialized);
-            Signals.Get<BallEnteredCup>().AddListener(OnBallEnteredCup);
+            EventDispatcher.Instance.GameplayInitialized += OnGameplayInitialized;
+            EventDispatcher.Instance.BallEnteredCup += OnBallEnteredCup;
         }
 
         private void OnBallEnteredCup()

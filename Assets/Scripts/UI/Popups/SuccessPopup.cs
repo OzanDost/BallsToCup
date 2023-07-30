@@ -1,14 +1,12 @@
-using System;
 using Coffee.UIExtensions;
 using DG.Tweening;
-using ThirdParty;
-using ThirdParty.uiframework.Window;
+using UI.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace UI.Popups
 {
-    public class SuccessPopup : AWindowController<SuccessWindowProperties>
+    public class SuccessPopup : Popup
     {
         [SerializeField] private Button continueButton;
 
@@ -20,15 +18,14 @@ namespace UI.Popups
         private Sequence _starSequence;
 
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
             continueButton.onClick.AddListener(OnContinueButtonClicked);
         }
 
-        protected override void On_UIOPen()
+        public override void OnOpen()
         {
-            base.On_UIOPen();
+            base.OnOpen();
             leftParticle.Play();
             rightParticle.Play();
 
@@ -46,21 +43,16 @@ namespace UI.Popups
             }
         }
 
-        protected override void On_UIClose()
+        public override void OnClose()
         {
-            base.On_UIClose();
+            base.OnClose();
 
             _starSequence?.Kill(true);
         }
 
         private void OnContinueButtonClicked()
         {
-            Signals.Get<PlayButtonClicked>().Dispatch();
+            EventDispatcher.Instance.PlayButtonClicked?.Invoke();
         }
-    }
-
-    [Serializable]
-    public class SuccessWindowProperties : WindowProperties
-    {
     }
 }

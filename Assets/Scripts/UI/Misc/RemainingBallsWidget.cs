@@ -15,8 +15,8 @@ namespace UI.Misc
 
         private void Awake()
         {
-            Signals.Get<GameplayInitialized>().AddListener(OnGameplayInitialized);
-            Signals.Get<BallReleaseRequested>().AddListener(OnBallReleaseRequested);
+            EventDispatcher.Instance.GameplayInitialized += OnGameplayInitialized;
+            EventDispatcher.Instance.BallReleaseRequested += OnBallReleaseRequested;
         }
 
         private void OnGameplayInitialized(LevelData data)

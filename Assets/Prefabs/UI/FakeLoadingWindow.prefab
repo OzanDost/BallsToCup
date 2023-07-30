@@ -175,13 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d84c45b88d4ee46eeb9cdd4d706ec4d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animIn: {fileID: 0}
-  animOut: {fileID: 0}
-  properties:
-    hideOnForegroundLost: 1
-    windowQueuePriority: 0
-    isPopup: 0
-  threeDots: {fileID: 1095094214568937192}
+  _threeDots: {fileID: 1095094214568937192}
 --- !u!1 &7555874910470359143
 GameObject:
   m_ObjectHideFlags: 0

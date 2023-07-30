@@ -1,53 +1,48 @@
 using Enums;
-using ThirdParty;
-using ThirdParty.uiframework;
+using UI.Core;
 using UnityEngine;
-using Utils;
 
-namespace Game
+namespace Game.Managers
 {
     public class UIManager : MonoBehaviour
     {
-        [SerializeField] private UISettings _defaultUISettings;
-
-        private UIFrame _uiFrame;
+        [SerializeField] private UIController _uiController;
 
         private void Awake()
         {
-            _uiFrame = _defaultUISettings.CreateUIInstance();
             AddListeners();
         }
 
         private void AddListeners()
         {
-            Signals.Get<GameStateChanged>().AddListener(OnGameStateChanged);
+            EventDispatcher.Instance.GameStateChanged += OnGameStateChanged;
         }
 
         private void OnGameStateChanged(GameState oldState, GameState newState)
         {
             if (newState == GameState.Loading)
             {
-                _uiFrame.OpenWindow(ScreenIds.LoadingWindow);
+                _uiController.ShowWindow(ScreenEnum.LoadingWindow);
             }
 
             if (newState == GameState.Menu)
             {
-                _uiFrame.OpenWindow(ScreenIds.MenuWindow);
+                _uiController.ShowWindow(ScreenEnum.MainMenuWindow);
             }
 
             if (newState == GameState.Gameplay)
             {
-                _uiFrame.OpenWindow(ScreenIds.GameplayWindow);
+                _uiController.ShowWindow(ScreenEnum.GameWindow);
             }
 
             if (newState == GameState.Success)
             {
-                _uiFrame.OpenWindow(ScreenIds.SuccessPopup);
+                _uiController.ShowWindow(ScreenEnum.SuccessPopup);
             }
 
             if (newState == GameState.Fail)
             {
-                _uiFrame.OpenWindow(ScreenIds.FailPopup);
+                _uiController.ShowWindow(ScreenEnum.FailPopup);
             }
         }
     }

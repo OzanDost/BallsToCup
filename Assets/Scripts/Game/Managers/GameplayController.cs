@@ -1,12 +1,10 @@
 using Data;
 using DefaultNamespace;
 using DG.Tweening;
-using Game.Managers;
-using Lofelt.NiceVibrations;
 using ThirdParty;
 using UnityEngine;
 
-namespace Game
+namespace Game.Managers
 {
     public class GameplayController : MonoBehaviour
     {
@@ -33,12 +31,12 @@ namespace Game
 
         private void AddListeners()
         {
-            Signals.Get<RequestGameplayInitialize>().AddListener(Initialize);
-            Signals.Get<BallEnteredCup>().AddListener(OnBallEnteredCup);
-            Signals.Get<BallFellOut>().AddListener(OnBallFellOut);
-            Signals.Get<LevelQuitRequested>().AddListener(OnLevelQuitRequested);
-            Signals.Get<FinishButtonClicked>().AddListener(FinishLevel);
-            Signals.Get<LevelSuccess>().AddListener(OnLevelSuccess);
+            EventDispatcher.Instance.RequestGameplayInitialize += Initialize;
+            EventDispatcher.Instance.BallEnteredCup += OnBallEnteredCup;
+            EventDispatcher.Instance.BallFellOut += OnBallFellOut;
+            EventDispatcher.Instance.LevelQuitRequested += OnLevelQuitRequested;
+            EventDispatcher.Instance.FinishButtonClicked += FinishLevel;
+            EventDispatcher.Instance.LevelSuccess += OnLevelSuccess;
         }
 
         private void OnLevelSuccess()
@@ -61,7 +59,8 @@ namespace Game
             _ballTargetCount = data.BallTargetCount;
             _totalBallCount = data.BallCount;
 
-            Signals.Get<GameplayInitialized>().Dispatch(data);
+            EventDispatcher.Instance.GameplayInitialized?.Invoke(data);
+            
             _inputController.Initialize(_tube);
         }
 
@@ -71,12 +70,11 @@ namespace Game
 
             if (_enteredBallCount >= _ballTargetCount)
             {
-                Signals.Get<SufficientBallCountReached>().Dispatch();
+                EventDispatcher.Instance.SufficientBallCountReached?.Invoke();
             }
 
             CheckProcessedBalls();
             
-            HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
         }
 
         private void OnBallFellOut()
@@ -86,7 +84,7 @@ namespace Game
 
             if (!_levelFinished)
             {
-                Signals.Get<RequestCameraShake>().Dispatch();
+                EventDispatcher.Instance.CameraShakeRequested?.Invoke();
             }
         }
 
@@ -106,7 +104,7 @@ namespace Game
                 {
                     if (!_levelFinished)
                     {
-                        Signals.Get<LevelFailed>().Dispatch();
+                        EventDispatcher.Instance.LevelFailed?.Invoke();
                         _levelFinished = true;
                     }
                 }
@@ -121,7 +119,10 @@ namespace Game
                 particle.Play();
             }
 
-            DOVirtual.DelayedCall(1f, () => { Signals.Get<LevelSuccess>().Dispatch(); });
+            DOVirtual.DelayedCall(1f, () =>
+            {
+                EventDispatcher.Instance.LevelSuccess?.Invoke();
+            });
         }
 
         private void LoadTube(Tube tube)

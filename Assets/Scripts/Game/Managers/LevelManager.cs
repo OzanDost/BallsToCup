@@ -4,13 +4,12 @@ using ThirdParty;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Game
+namespace Game.Managers
 {
     public class LevelManager : MonoBehaviour
     {
         [SerializeField] private List<LevelData> _levelList;
 
-        private const string LevelSaveDataPath = "LevelDatas";
         private LevelData _lastActiveLevel;
         private int _levelIndex;
         private bool _finishedAllLevels;
@@ -23,7 +22,7 @@ namespace Game
 
         private void AddListeners()
         {
-            Signals.Get<LevelSuccess>().AddListener(OnLevelSuccess);
+            EventDispatcher.Instance.LevelSuccess += OnLevelSuccess;
         }
 
         private void OnLevelSuccess()
@@ -52,7 +51,7 @@ namespace Game
                 data = _lastActiveLevel;
             }
 
-            Signals.Get<RequestGameplayInitialize>().Dispatch(data);
+            EventDispatcher.Instance.RequestGameplayInitialize?.Invoke(data);
             _lastActiveLevel = data;
         }
 

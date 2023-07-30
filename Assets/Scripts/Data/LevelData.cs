@@ -1,4 +1,5 @@
 using DefaultNamespace;
+using Game;
 using UnityEngine;
 
 namespace Data

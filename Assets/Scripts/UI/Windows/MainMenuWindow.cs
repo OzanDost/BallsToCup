@@ -1,23 +1,21 @@
-using ThirdParty;
-using ThirdParty.uiframework.Window;
+using UI.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace UI.Windows
 {
-    public class MainMenuWindow : AWindowController
+    public class MainMenuWindow : Window
     {
-        [SerializeField] private Button playButton;
+        [SerializeField] private Button _playButton;
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
-            playButton.onClick.AddListener(OnPlayButtonClicked);
+            _playButton.onClick.AddListener(OnPlayButtonClicked);
         }
 
         private void OnPlayButtonClicked()
         {
-            Signals.Get<PlayButtonClicked>().Dispatch();
+            EventDispatcher.Instance.PlayButtonClicked?.Invoke();
         }
     }
 }

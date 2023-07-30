@@ -1,15 +1,12 @@
 using System.Collections.Generic;
 using Data;
-using ThirdParty;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace Game
 {
     public class BallOutsideHandler : MonoBehaviour
     {
         private List<GameObject> _collidedBalls = new();
-
-        private ASignal _ballFellOutSignal;
 
         private void Start()
         {
@@ -18,8 +15,7 @@ namespace DefaultNamespace
 
         private void AddListeners()
         {
-            Signals.Get<GameplayInitialized>().AddListener(OnGameplayInitialized);
-            _ballFellOutSignal = Signals.Get<BallFellOut>();
+            EventDispatcher.Instance.GameplayInitialized += OnGameplayInitialized;
         }
 
         private void OnGameplayInitialized(LevelData data)
@@ -32,7 +28,7 @@ namespace DefaultNamespace
             if (!_collidedBalls.Contains(other.gameObject))
             {
                 _collidedBalls.Add(other.gameObject);
-                _ballFellOutSignal?.Dispatch();
+                EventDispatcher.Instance.BallFellOut?.Invoke();
             }
         }
     }

@@ -1,13 +1,12 @@
 using Data;
 using DG.Tweening;
-using ThirdParty;
-using ThirdParty.uiframework.Window;
+using UI.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace UI.Windows
 {
-    public class GameplayWindow : AWindowController
+    public class GameplayWindow : Window
     {
         [SerializeField] private Button _finishButton;
         [SerializeField] private Button _quitButton;
@@ -16,21 +15,16 @@ namespace UI.Windows
         private Tween _finishButtonTween;
         private float _finishButtonTargetX;
 
-        protected override void Awake()
+        protected void Awake()
         {
-            base.Awake();
             _finishButtonTargetX = -_finishButtonRect.rect.width - 20;
-        }
-
-        protected override void AddListeners()
-        {
-            base.AddListeners();
+            
             _quitButton.onClick.AddListener(OnQuitButtonClicked);
             _finishButton.onClick.AddListener(OnFinishButtonClicked);
 
-            Signals.Get<SufficientBallCountReached>().AddListener(OnSufficientBallCountReached);
-            Signals.Get<GameplayInitialized>().AddListener(OnGameplayInitialized);
-            Signals.Get<LevelSuccess>().AddListener(OnLevelSuccess);
+            EventDispatcher.Instance.SufficientBallCountReached += OnSufficientBallCountReached;
+            EventDispatcher.Instance.GameplayInitialized += OnGameplayInitialized;
+            EventDispatcher.Instance.LevelSuccess += OnLevelSuccess;
         }
 
         private void OnLevelSuccess()
@@ -46,7 +40,8 @@ namespace UI.Windows
 
         private void OnFinishButtonClicked()
         {
-            Signals.Get<FinishButtonClicked>().Dispatch();
+            EventDispatcher.Instance.FinishButtonClicked?.Invoke();
+            
             ToggleFinishButton(false);
         }
 
@@ -73,7 +68,7 @@ namespace UI.Windows
 
         private void OnQuitButtonClicked()
         {
-            Signals.Get<LevelQuitRequested>().Dispatch();
+            EventDispatcher.Instance.LevelQuitRequested?.Invoke();
         }
     }
 }

@@ -1,15 +1,13 @@
 using DG.Tweening;
-using Lofelt.NiceVibrations;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace UI.Misc
 {
-    public class ButtonAnimator : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler,
-        IPointerClickHandler
+    public class ButtonAnimator : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
     {
-        [SerializeField] private float animationSpeed = 3f;
-        [SerializeField] private float subtractedScale = 0.1f;
+        [SerializeField] private float _animationSpeed = 3f;
+        [SerializeField] private float _subtractedScale = 0.1f;
 
         private Tween _animationTween;
         private float _defaultScale;
@@ -25,7 +23,7 @@ namespace UI.Misc
             }
 
             _animationTween?.Kill();
-            _animationTween = transform.DOScale(_defaultScale - subtractedScale, animationSpeed).SetSpeedBased()
+            _animationTween = transform.DOScale(_defaultScale - _subtractedScale, _animationSpeed).SetSpeedBased()
                 .SetEase(Ease.Linear);
 
             _isPressed = true;
@@ -36,7 +34,7 @@ namespace UI.Misc
             if (!_isPressed) return;
             _isPressed = false;
             _animationTween?.Kill();
-            _animationTween = transform.DOScale(_defaultScale, animationSpeed).SetSpeedBased().SetEase(Ease.Linear);
+            _animationTween = transform.DOScale(_defaultScale, _animationSpeed).SetSpeedBased().SetEase(Ease.Linear);
         }
 
         public void OnPointerExit(PointerEventData eventData)
@@ -44,13 +42,7 @@ namespace UI.Misc
             if (!_isPressed) return;
             _isPressed = false;
             _animationTween?.Kill();
-            _animationTween = transform.DOScale(_defaultScale, animationSpeed).SetSpeedBased().SetEase(Ease.Linear);
-        }
-
-
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
+            _animationTween = transform.DOScale(_defaultScale, _animationSpeed).SetSpeedBased().SetEase(Ease.Linear);
         }
     }
 }

@@ -1,7 +1,7 @@
-using ThirdParty;
+using DefaultNamespace;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace Game
 {
     [RequireComponent(typeof(BoxCollider))]
     public class BallReleaser : MonoBehaviour
@@ -12,7 +12,7 @@ namespace DefaultNamespace
         private void OnTriggerEnter(Collider other)
         {
             var ball = other.GetComponent<Ball>();
-            Signals.Get<BallReleaseRequested>().Dispatch(ball);
+            EventDispatcher.Instance.BallReleaseRequested?.Invoke(ball);
         }
     }
 }

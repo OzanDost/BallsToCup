@@ -1,9 +1,8 @@
 using DefaultNamespace;
 using Enums;
-using ThirdParty;
 using UnityEngine;
 
-namespace Game
+namespace Game.Managers
 {
     public class GameManager : MonoBehaviour
     {
@@ -26,12 +25,12 @@ namespace Game
 
         private void AddListeners()
         {
-            Signals.Get<FakeLoadingFinished>().AddListener(OnFakeLoadingFinished);
-            Signals.Get<PlayButtonClicked>().AddListener(OnPlayButtonClicked);
-            Signals.Get<LevelFailed>().AddListener(OnLevelFailed);
-            Signals.Get<LevelSuccess>().AddListener(OnLevelSuccess);
-            Signals.Get<LevelQuitRequested>().AddListener(OnLevelQuitRequested);
-            Signals.Get<LevelRetryRequested>().AddListener(OnLevelRetryRequested);
+            EventDispatcher.Instance.FakeLoadingFinished += OnFakeLoadingFinished;
+            EventDispatcher.Instance.PlayButtonClicked += OnPlayButtonClicked;
+            EventDispatcher.Instance.LevelFailed += OnLevelFailed;
+            EventDispatcher.Instance.LevelSuccess += OnLevelSuccess;
+            EventDispatcher.Instance.LevelQuitRequested += OnLevelQuitRequested;
+            EventDispatcher.Instance.LevelRetryRequested += OnLevelRetryRequested;
         }
 
         private void OnLevelQuitRequested()
@@ -70,7 +69,7 @@ namespace Game
         {
             var oldGameState = CurrentGameState;
             CurrentGameState = newGameState;
-            Signals.Get<GameStateChanged>().Dispatch(oldGameState, newGameState);
+            EventDispatcher.Instance.GameStateChanged?.Invoke(oldGameState, newGameState);
         }
 
         private void ApplyConfigs()

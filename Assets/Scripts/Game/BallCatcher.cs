@@ -7,13 +7,11 @@ namespace DefaultNamespace
 {
     public class BallCatcher : MonoBehaviour
     {
-        private ASignal _ballEnteredCupSignal;
         private List<GameObject> _addedBalls = new();
 
         private void Start()
         {
-            _ballEnteredCupSignal = Signals.Get<BallEnteredCup>();
-            Signals.Get<GameplayInitialized>().AddListener(OnGameplayInitialized);
+            EventDispatcher.Instance.GameplayInitialized += OnGameplayInitialized;
         }
 
         private void OnGameplayInitialized(LevelData data)
@@ -26,7 +24,8 @@ namespace DefaultNamespace
             if (!_addedBalls.Contains(other.gameObject))
             {
                 _addedBalls.Add(other.gameObject);
-                _ballEnteredCupSignal?.Dispatch();
+                
+                EventDispatcher.Instance.BallEnteredCup?.Invoke();
             }
         }
     }

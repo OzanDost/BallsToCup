@@ -1,21 +1,20 @@
 using DG.Tweening;
-using ThirdParty;
-using ThirdParty.uiframework.Window;
+using UI.Core;
 using UI.Misc;
 using UnityEngine;
 
 namespace UI.Windows
 {
-    public class FakeLoadingWindow : AWindowController
+    public class FakeLoadingWindow : Window
     {
-        [SerializeField] private ThreeDots threeDots;
+        [SerializeField] private ThreeDots _threeDots;
 
         private readonly float _fakeLoadDuration = 5f;
 
-        protected override void On_UIOPen()
+        public override void OnOpen()
         {
-            base.On_UIOPen();
-            threeDots.ToggleAnimation(true);
+            base.OnOpen();
+            _threeDots.ToggleAnimation(true);
 
             DOVirtual.DelayedCall(_fakeLoadDuration, LoadingCompleted);
         }
@@ -23,13 +22,13 @@ namespace UI.Windows
         private void LoadingCompleted()
         {
             CloseRequest?.Invoke(this);
-            Signals.Get<FakeLoadingFinished>().Dispatch();
+            EventDispatcher.Instance.FakeLoadingFinished?.Invoke();
         }
 
-        public override void UI_Close()
+        public override void OnClose()
         {
-            base.UI_Close();
-            threeDots.ToggleAnimation(false);
+            base.OnClose();
+            _threeDots.ToggleAnimation(false);
         }
     }
 }

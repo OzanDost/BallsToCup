@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using ThirdParty;
+using DefaultNamespace;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace Game
 {
     public class Tube : MonoBehaviour
     {
@@ -24,7 +24,7 @@ namespace DefaultNamespace
 
         private void Start()
         {
-            Signals.Get<BallReleaseRequested>().AddListener(OnBallReleaseRequested);
+            EventDispatcher.Instance.BallReleaseRequested += OnBallReleaseRequested;
         }
 
         private void OnBallReleaseRequested(Ball ball)
